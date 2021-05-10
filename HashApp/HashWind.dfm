@@ -161,7 +161,7 @@ object HashForm: THashForm
     OnClick = InputEditChange
   end
   object FindButton: TButton
-    Left = 110
+    Left = 24
     Top = 198
     Width = 75
     Height = 25
@@ -198,5 +198,21 @@ object HashForm: THashForm
     ParentFont = False
     TabOrder = 8
     OnClick = MinButtonClick
+  end
+  object HashDelButton: TButton
+    Left = 110
+    Top = 198
+    Width = 75
+    Height = 25
+    Caption = #1059#1076#1072#1083#1080#1090#1100
+    Enabled = False
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -13
+    Font.Name = 'Tahoma'
+    Font.Style = [fsUnderline]
+    ParentFont = False
+    TabOrder = 9
+    OnClick = HashDelButtonClick
   end
 end

@@ -24,12 +24,14 @@ __published:	// IDE-managed Components
 	TEdit *MinEdit;
 	TLabel *FindLabel;
 	TButton *MinButton;
+	TButton *HashDelButton;
 	void __fastcall AddButtonClick(TObject *Sender);
 	void __fastcall DelButtonClick(TObject *Sender);
 	void __fastcall InputEditChange(TObject *Sender);
 	void __fastcall FindButtonClick(TObject *Sender);
 	void __fastcall DataEditChange(TObject *Sender);
 	void __fastcall MinButtonClick(TObject *Sender);
+	void __fastcall HashDelButtonClick(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall THashForm(TComponent* Owner);

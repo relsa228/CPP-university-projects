@@ -25,7 +25,8 @@ void __fastcall THashForm::AddButtonClick(TObject *Sender)
 void __fastcall THashForm::DelButtonClick(TObject *Sender)
 {
 	HT.elem.data = StrToInt(DataEdit->Text);
-	HT.deleteElem(HashTableMemo);
+	HT.elem.toHash();
+	HT.deleteElem(HashTableMemo, HT.hashTable[HT.elem.hash].GetSize());
 }
 
 void __fastcall THashForm::InputEditChange(TObject *Sender)
@@ -34,9 +35,15 @@ void __fastcall THashForm::InputEditChange(TObject *Sender)
 		InputEdit->Text = "";
 	InputEdit->Font->Color = clWindowText;
 	if (InputEdit->Text!="")
+	{
 		FindButton->Enabled = true;
+		HashDelButton->Enabled = true;
+	}
 	else
+	{
 		FindButton->Enabled = false;
+		HashDelButton->Enabled = false;
+    }
 
 }
 //---------------------------------------------------------------------------
@@ -65,6 +72,13 @@ void __fastcall THashForm::DataEditChange(TObject *Sender)
 void __fastcall THashForm::MinButtonClick(TObject *Sender)
 {
     HT.minElem(MinEdit);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall THashForm::HashDelButtonClick(TObject *Sender)
+{
+	HT.elem.hash = StrToInt(InputEdit->Text);
+	HT.delHashBranch(HashTableMemo);
 }
 //---------------------------------------------------------------------------
 

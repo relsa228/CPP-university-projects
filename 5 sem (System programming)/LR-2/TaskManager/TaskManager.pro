@@ -1,4 +1,5 @@
 QT       += core gui
+QT       += printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -13,6 +14,7 @@ SOURCES += \
     Services/Messages/errormsgservice.cpp \
     Services/Messages/infomsgservice.cpp \
     Services/processservice.cpp \
+    Services/reportservice.cpp \
     Services/tableservice.cpp \
     main.cpp \
     taskwindow.cpp
@@ -22,6 +24,7 @@ HEADERS += \
     Services/Messages/errormsgservice.h \
     Services/Messages/infomsgservice.h \
     Services/processservice.h \
+    Services/reportservice.h \
     Services/tableservice.h \
     taskwindow.h
 

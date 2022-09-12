@@ -5,11 +5,16 @@
 #include <QFileDialog>
 #include <QProcess>
 #include <QTimer>
+#include <QFile>
+#include <QPrintDialog>
+#include <QPrinter>
+#include <QPainter>
 
 #include <Services/tableservice.h>
 #include <Services/processservice.h>
 #include <Services/Messages/errormsgservice.h>
 #include <Services/Messages/infomsgservice.h>
+#include <Services/reportservice.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class TaskWindow; }
@@ -22,6 +27,9 @@ class TaskWindow : public QMainWindow
 public:
     TaskWindow(QWidget *parent = nullptr);
     ~TaskWindow();
+
+private:
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void on_updateTable();
@@ -47,6 +55,7 @@ private:
 
     TableService* tableService;
     ProcessService* processService;
+    ReportService* reportService;
 
     QTimer *timer;
 };

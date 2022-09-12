@@ -9,6 +9,7 @@ TaskWindow::TaskWindow(QWidget *parent)
 
     tableService = new TableService(ui->processView);
     processService = new ProcessService();
+    reportService = new ReportService();
 
     timer = new QTimer();
     connect(timer, SIGNAL(timeout()), this, SLOT(on_updateTable()));
@@ -96,14 +97,43 @@ void TaskWindow::on_cleanTableButton_clicked()
     tableService->dropTable();
 }
 
+void TaskWindow::closeEvent(QCloseEvent *event)
+{
+    tableService->dropTable();
+}
+
 ///////////////////reports//////////////////////////////
 void TaskWindow::on_printReportButton_clicked()
 {
+    QPrinter printer;
 
+    QPrintDialog *dialog = new QPrintDialog(&printer);
+    dialog->setWindowTitle("Print Document");
+
+    if (dialog->exec() != QDialog::Accepted)
+        return;
+
+    QPainter painter;
+    painter.begin(&printer);
+
+    painter.drawText(100, 100, 500, 500, Qt::AlignLeft|Qt::AlignTop,
+                     reportService->getReport(tableService->processCollection, QDateTime::currentDateTime().toString("dd.MM.yyyy HH:mm:ss")));
+
+    painter.end();
+
+    return;
 }
 
 
 void TaskWindow::on_getReportButton_clicked()
 {
-
+    QString reportSavePath = QFileDialog::getSaveFileName(this, tr("Сохранить файл"), "",
+                                                          tr("TXT (*.txt)"));
+    QFile fileOut(reportSavePath);
+    if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream writeStream(&fileOut);
+        writeStream << reportService->getReport(tableService->processCollection, QDateTime::currentDateTime().toString("dd.MM.yyyy HH:mm:ss"));
+        fileOut.close();
+    }
 }

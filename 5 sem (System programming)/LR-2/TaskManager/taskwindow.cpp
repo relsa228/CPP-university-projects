@@ -116,7 +116,7 @@ void TaskWindow::on_printReportButton_clicked()
     QPainter painter;
     painter.begin(&printer);
 
-    painter.drawText(100, 100, 500, 500, Qt::AlignLeft|Qt::AlignTop,
+    painter.drawText(100, 100, 1500, 1500, Qt::AlignLeft|Qt::AlignTop,
                      reportService->getReport(tableService->processCollection, QDateTime::currentDateTime().toString("dd.MM.yyyy HH:mm:ss")));
 
     painter.end();

@@ -1,17 +1,18 @@
 use std::net::IpAddr;
-use std::ops::Range;
-use std::slice::Iter;
 use std::str::FromStr;
 
 
 pub(crate) fn ip_check (ip_adress: &str) -> bool {
     return match IpAddr::from_str(ip_adress) {
         Ok(_) => true,
-        Err(_) => false
+        Err(_) => {
+            println!("Incorrect ip address. Need IPv4 or IPv6.");
+            false
+        }
     };
 }
 
-pub(crate) fn parsing_input_ports(ports: String) -> Vec<u16> {
+pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
     let mut result_vector: Vec<u16> = Vec::new();
     let mut buffer_f: String = String::from("");
     let mut buffer_s: String = String::from("");
@@ -28,7 +29,7 @@ pub(crate) fn parsing_input_ports(ports: String) -> Vec<u16> {
                 true => {
                     match buffer_f.trim().parse::<u16>() {
                         Ok(s) => result_vector.push(s),
-                        Err(_) => println!("Input error")
+                        Err(_) => println!("Input error. One of the port is incorrect.")
                     };
                 }
                 false => {
@@ -39,7 +40,7 @@ pub(crate) fn parsing_input_ports(ports: String) -> Vec<u16> {
                                 result_vector.push(val);
                             };
                         }
-                        Err(_) => println!("Input error")
+                        Err(_) => println!("Input error. One of the port is incorrect.")
                     };
                     buffer_change = false;
                     buffer_s.clear();

@@ -1,3 +1,0 @@
-C:/Users/ralia/Desktop/git/CPP_university_projects/5 term/System programming/LR-3/cmake-build-debug/CMakeFiles/LR_3.dir
-C:/Users/ralia/Desktop/git/CPP_university_projects/5 term/System programming/LR-3/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Users/ralia/Desktop/git/CPP_university_projects/5 term/System programming/LR-3/cmake-build-debug/CMakeFiles/rebuild_cache.dir

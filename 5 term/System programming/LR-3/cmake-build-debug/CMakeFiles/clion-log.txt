@@ -1,4 +1,0 @@
-C:\Programs\JetBrains\apps\CLion\ch-0\222.4345.21\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Programs/JetBrains/apps/CLion/ch-0/222.4345.21/bin/ninja/win/ninja.exe -G Ninja -S "C:\Users\ralia\Desktop\git\CPP_university_projects\5 term\System programming\LR-3" -B "C:\Users\ralia\Desktop\git\CPP_university_projects\5 term\System programming\LR-3\cmake-build-debug"
--- Configuring done
--- Generating done
--- Build files have been written to: C:/Users/ralia/Desktop/git/CPP_university_projects/5 term/System programming/LR-3/cmake-build-debug

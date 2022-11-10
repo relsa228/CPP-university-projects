@@ -2,6 +2,10 @@
 cmake-build-debug
 target
 
+.vs
+.vscode
+build
+
 # Prerequisites
 *.d
 

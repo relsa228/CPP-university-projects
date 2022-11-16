@@ -8,19 +8,19 @@ use crate::input_validation_module::parsing_input_ports;
 fn main() {
     let args: Vec<String> = env::args().collect();
     if args.len() < 2 {
-        println!("Too few args, use -h to get help");
+        println!("~~Error~~\nToo few args, use -h to get help\n~~~~~~~~~");
         return;
     }
     let mut f_arg = args[1].clone();
-    if f_arg == "-h" || f_arg == "-help" {
+    if f_arg == "-h" || f_arg == "--help" {
         println!("DesuScan help:3
-           \n----- INPUT FORMAT: desuscan [ip (you can use 'local' to scan your local port)] -p (optional) \
-           -op (optional) -----\
-           \n\n-h or -help : for call help\
+           \n----- INPUT FORMAT: desuscan [ip (you can use 'local' to scan your local port)] -p .. \
+           -op (optional) .. -----\
+           \n\n-h or --help : for call help\
            \n-v or --version : for call info about version\
-           \n-op or --option : value is 'udp' or 'tcp' (default: tlc), use this flag to choose port \
+           \n-op or --option : value is 'udp' or 'tcp' (default: tcp), use this flag to choose port \
            scanning port type\
-           \n-p or --port : for set the investigated ports (default: scan all 65535 ports)\
+           \n-p or --port : for set the investigated ports (use 'all' to scan all 65535 ports)\
            \n\nBe careful and enjoy you use, desu >_<\n");
         return;
     }
@@ -47,27 +47,28 @@ fn main() {
         }
         else if op_flag {
             if arg != "udp" && arg != "tcp" {
-                println!("Invalid option, use -h to get help");
+                println!("~~Error~~\nInvalid option, use -h to get help\n~~~~~~~~~");
                 return;
             }
             option = arg;
         }
         else if port_flag {
-            ports += (arg.clone().as_str().to_owned() + " ".trim()).as_str()
+            ports += (arg.clone().as_str().to_owned() + ", ".trim()).as_str()
         }
+    }
+    if ports.is_empty(){
+        println!("~~Error~~\nBaka! You must enter some ports!\n~~~~~~~~~")
     }
     let mut option_arg: u8 = 1;
     if option == "udp" {
         option_arg = 0;
     }
-    if ports == "" {
+    if ports == "all" {
         ports = "0-65534,".to_string();
     }
     if f_arg == "local" {
         f_arg = "127.0.0.1".to_string();
     }
-    ports += ",";
-    println!("Say UwU to DesuScan");
     network_module::scan_init(f_arg.trim(),
                               parsing_input_ports(ports.trim()),
                               option_arg);

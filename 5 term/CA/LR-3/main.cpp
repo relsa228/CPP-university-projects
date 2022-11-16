@@ -18,12 +18,12 @@ int main() {
         for (int j = 0; j < n; ++j)
             column[j] = rand();
 
-        //double start_time = omp_get_wtime();                              //based
-        //std::vector<double> solution = gauss_solving(matrix, column, n);
-        //std::cout << " | " << n << "  \t| " << omp_get_wtime() - start_time << "  \t| " << std::endl;
+        double start_time = omp_get_wtime();                              //based
+        std::vector<double> solution = gauss_solving(matrix, column, n);
+        std::cout << " | " << n << "  \t| " << omp_get_wtime() - start_time << "  \t| " << std::endl;
 
-        double start_time_omp = omp_get_wtime();                            //omp
-        std::vector<double> solution_omp = gauss_solving_omp(matrix, column, n);
-        std::cout << " | " << n << "  \t| " << omp_get_wtime() - start_time_omp << "  \t| " << std::endl;
+        //double start_time_omp = omp_get_wtime();                            //omp
+        //std::vector<double> solution_omp = gauss_solving_omp(matrix, column, n);
+        //std::cout << " | " << n << "  \t| " << omp_get_wtime() - start_time_omp << "  \t| " << std::endl;
     }
 }

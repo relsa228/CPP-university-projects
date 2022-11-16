@@ -10,6 +10,9 @@ pub(crate) fn scan_init(host: &str, ports: Vec<u16>, option: u8) {
 }
 
 fn port_scan_tcp(host: &str, ports: Vec<u16>) {
+    if ports.is_empty() == false {
+        println!("Say UwU to DesuScan");
+    }
     for port in ports {
         match TcpListener::bind((host, port)) {
             Ok(s) => {
@@ -24,6 +27,9 @@ fn port_scan_tcp(host: &str, ports: Vec<u16>) {
 }
 
 fn port_scan_udp(host: &str, ports: Vec<u16>) {
+    if ports.is_empty() == false {
+        println!("Say UwU to DesuScan");
+    }
     for port in ports {
         match UdpSocket::bind((host, port)) {
             Ok(s) => {

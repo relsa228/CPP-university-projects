@@ -6,7 +6,7 @@ pub(crate) fn ip_check (ip_adress: &str) -> bool {
     return match IpAddr::from_str(ip_adress) {
         Ok(_) => true,
         Err(_) => {
-            println!("Incorrect ip address. Need IPv4 or IPv6.");
+            println!("~~Error~~\nIncorrect ip address! Please use IPv4 or IPv6, desu:3\n~~~~~~~~~");
             false
         }
     };
@@ -27,9 +27,10 @@ pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
         else if symb == ',' || symb == '\n' {
             match !buffer_change {
                 true => {
-                    match buffer_f.trim().parse::<u16>() {
+                    match buffer_f.parse::<u16>() {
                         Ok(s) => result_vector.push(s),
-                        Err(_) => println!("Input error. One of the port is incorrect.")
+                        Err(_) => println!("~~Warning~~\nOne of the port is incorrect! It will be \
+                        excluded from the search list -_-\n~~~~~~~~~~~")
                     };
                 }
                 false => {
@@ -40,7 +41,8 @@ pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
                                 result_vector.push(val);
                             };
                         }
-                        Err(_) => println!("Input error. One of the port is incorrect.")
+                        Err(_) => println!("~~Warning~~\nOne of the port is incorrect! It will be \
+                        excluded from the search list -_-\n~~~~~~~~~~~")
                     };
                     buffer_change = false;
                     buffer_s.clear();

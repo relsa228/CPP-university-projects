@@ -3,16 +3,20 @@ use std::str::FromStr;
 
 
 pub(crate) fn ip_check (ip_adress: &str) -> bool {
+    let mut terminal = term::stdout().unwrap();
     return match IpAddr::from_str(ip_adress) {
         Ok(_) => true,
         Err(_) => {
-            println!("~~Error~~\nIncorrect ip address! Please use IPv4 or IPv6, desu:3\n~~~~~~~~~");
+            terminal.fg(term::color::BRIGHT_RED).unwrap();
+            println!("~~Error~~\nIncorrect ip address! Please use IPv4 or IPv6, desu:3");
+            terminal.reset().unwrap();
             false
         }
     };
 }
 
 pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
+    let mut terminal = term::stdout().unwrap();
     let mut result_vector: Vec<u16> = Vec::new();
     let mut buffer_f: String = String::from("");
     let mut buffer_s: String = String::from("");
@@ -29,8 +33,12 @@ pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
                 true => {
                     match buffer_f.parse::<u16>() {
                         Ok(s) => result_vector.push(s),
-                        Err(_) => println!("~~Warning~~\nOne of the port is incorrect! It will be \
-                        excluded from the search list -_-\n~~~~~~~~~~~")
+                        Err(_) => {
+                            terminal.fg(term::color::BRIGHT_YELLOW).unwrap();
+                            println!("~~Warning~~\nOne of the port is incorrect! It will be \
+                        excluded from the search list -_-");
+                            terminal.reset().unwrap();
+                        }
                     };
                 }
                 false => {
@@ -41,8 +49,12 @@ pub(crate) fn parsing_input_ports(ports: &str) -> Vec<u16> {
                                 result_vector.push(val);
                             };
                         }
-                        Err(_) => println!("~~Warning~~\nOne of the port is incorrect! It will be \
-                        excluded from the search list -_-\n~~~~~~~~~~~")
+                        Err(_) => {
+                            terminal.fg(term::color::BRIGHT_YELLOW).unwrap();
+                            println!("~~Warning~~\nOne of the port is incorrect! It will be \
+                        excluded from the search list -_-");
+                            terminal.reset().unwrap();
+                        }
                     };
                     buffer_change = false;
                     buffer_s.clear();

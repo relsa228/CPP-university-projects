@@ -42,18 +42,22 @@ and 'UNavailable Only', by default desuscan print all results
         terminal.reset().unwrap();
         return;
     }
+
+    let mut host = "";
     if f_arg == "local" {
-        f_arg = "127.0.0.1".to_string();
+        host = "127.0.0.1";
     }
     else if input_validation_module::ip_check(f_arg.trim()) {
-        return;
+        host = f_arg.trim();
     }
+
     let mut option: String = String::from("");
     let mut protocol: String = String::from("");
     let mut ports: String = String::from("");
     let mut op_flag = false;
     let mut pro_flag = false;
     let mut port_flag = false;
+
     for arg in args {
         if arg == "-pro" || arg == "--protocol" {
             pro_flag = true;
@@ -116,7 +120,7 @@ and 'UNavailable Only', by default desuscan print all results
     if option == "uno" {
         option_arg = 2;
     }
-    network_module::scan_init(f_arg.trim(),
+    network_module::scan_init(host,
                               parsing_input_ports(ports.trim()),
                               protocol_arg,
                               option_arg);

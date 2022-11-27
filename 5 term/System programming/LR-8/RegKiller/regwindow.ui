@@ -20,9 +20,6 @@
   <widget class="QWidget" name="fullGroup">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QTreeView" name="regArea"/>
-    </item>
-    <item>
      <widget class="QTextEdit" name="outputArea">
       <property name="readOnly">
        <bool>true</bool>
@@ -35,11 +32,18 @@
     <item>
      <layout class="QHBoxLayout" name="controlGroup">
       <item>
-       <layout class="QVBoxLayout" name="searchGroup">
+       <layout class="QHBoxLayout" name="horizontalLayout">
         <item>
-         <widget class="QLineEdit" name="searchEdit">
+         <widget class="QLineEdit" name="addrEdit">
           <property name="placeholderText">
-           <string>Поисковый запрос...</string>
+           <string>Адрес значения...</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="nameEdit">
+          <property name="placeholderText">
+           <string>Имя значения...</string>
           </property>
          </widget>
         </item>
@@ -50,21 +54,33 @@
         <item>
          <widget class="QPushButton" name="searchButton">
           <property name="text">
-           <string>Поиск</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="Resources/icons.qrc">
+            <normaloff>:/icons/functIcons/Icons/SystemIcons/search.svg</normaloff>:/icons/functIcons/Icons/SystemIcons/search.svg</iconset>
           </property>
          </widget>
         </item>
         <item>
          <widget class="QPushButton" name="exportButton">
           <property name="text">
-           <string>Экспорт</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="Resources/icons.qrc">
+            <normaloff>:/icons/functIcons/Icons/SystemIcons/upload.svg</normaloff>:/icons/functIcons/Icons/SystemIcons/upload.svg</iconset>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="clearButton">
+         <widget class="QPushButton" name="pushButton">
           <property name="text">
-           <string>Очистка</string>
+           <string/>
+          </property>
+          <property name="icon">
+           <iconset resource="Resources/icons.qrc">
+            <normaloff>:/icons/functIcons/Icons/SystemIcons/gear-fill.svg</normaloff>:/icons/functIcons/Icons/SystemIcons/gear-fill.svg</iconset>
           </property>
          </widget>
         </item>

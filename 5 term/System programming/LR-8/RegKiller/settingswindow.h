@@ -2,6 +2,7 @@
 #define SETTINGSWINDOW_H
 
 #include <QDialog>
+#include <windows.h>
 
 namespace Ui {
 class SettingsWindow;
@@ -12,7 +13,7 @@ class SettingsWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit SettingsWindow(uint *option, QWidget *parent = nullptr);
+    explicit SettingsWindow(HKEY *option, QWidget *parent = nullptr);
     ~SettingsWindow();
 
 private slots:
@@ -22,7 +23,7 @@ private slots:
 
 private:
     Ui::SettingsWindow *ui;
-    uint *wrkOption;
+    HKEY *wrkOption;
 };
 
 #endif // SETTINGSWINDOW_H

@@ -12,8 +12,8 @@ private:
 public:
     RegWorkerService();
 
-    RegUnit extractUnit(LPCTSTR subkey, LPCTSTR name, DWORD type, uint option);
-    QVector<RegUnit>* extractUnits(LPCTSTR subkey, DWORD type, uint option);
+    RegUnit extractUnit(LPCTSTR subkey, LPCTSTR name, DWORD type, HKEY option);
+    QVector<RegUnit>* extractUnits(LPCTSTR subkey, DWORD type, HKEY option);
 
 };
 

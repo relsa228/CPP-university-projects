@@ -8,7 +8,7 @@ RegWindow::RegWindow(QWidget *parent)
     ui->setupUi(this);
 
     regWorkerService = new RegWorkerService();
-    option = 0;
+    option = HKEY_CLASSES_ROOT;
 }
 
 RegWindow::~RegWindow()

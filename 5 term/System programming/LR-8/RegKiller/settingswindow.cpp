@@ -1,7 +1,7 @@
 #include "settingswindow.h"
 #include "ui_settingswindow.h"
 
-SettingsWindow::SettingsWindow(uint *option, QWidget *parent) :
+SettingsWindow::SettingsWindow(HKEY *option, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::SettingsWindow)
 {
@@ -9,25 +9,16 @@ SettingsWindow::SettingsWindow(uint *option, QWidget *parent) :
 
     wrkOption = option;
 
-    switch (*wrkOption) {
-    case 0:
+    if(*wrkOption == HKEY_CLASSES_ROOT)
         ui->ClassesRootRad->setChecked(true);
-        break;
-    case 1:
+    if(*wrkOption == HKEY_CURRENT_USER)
         ui->CurrentUserRad->setChecked(true);
-        break;
-    case 2:
+    if(*wrkOption == HKEY_LOCAL_MACHINE)
         ui->LocalMachineRad->setChecked(true);
-        break;
-    case 3:
+    if(*wrkOption == HKEY_USERS)
         ui->UsersRad->setChecked(true);
-        break;
-    case 4:
+    if(*wrkOption == HKEY_CURRENT_CONFIG)
         ui->CurrentConfigRad->setChecked(true);
-        break;
-    default:
-        break;
-    }
 }
 
 SettingsWindow::~SettingsWindow()
@@ -38,15 +29,15 @@ SettingsWindow::~SettingsWindow()
 void SettingsWindow::on_buttonBox_accepted()
 {
     if(ui->ClassesRootRad->isChecked())
-        *wrkOption = 0;
+        *wrkOption = HKEY_CLASSES_ROOT;
     if(ui->CurrentUserRad->isChecked())
-        *wrkOption = 1;
+        *wrkOption = HKEY_CURRENT_USER;
     if(ui->LocalMachineRad->isChecked())
-        *wrkOption = 2;
+        *wrkOption = HKEY_LOCAL_MACHINE;
     if(ui->UsersRad->isChecked())
-        *wrkOption = 3;
+        *wrkOption = HKEY_USERS;
     if(ui->CurrentConfigRad->isChecked())
-        *wrkOption = 4;
+        *wrkOption = HKEY_CURRENT_CONFIG;
 
     this->close();
 }

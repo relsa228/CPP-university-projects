@@ -30,7 +30,7 @@ private slots:
 private:
     Ui::RegWindow *ui;
     RegWorkerService *regWorkerService;
-    uint option;
+    HKEY option;
 
     void regRead(LPCTSTR subkey, LPCTSTR name, DWORD type);
 };

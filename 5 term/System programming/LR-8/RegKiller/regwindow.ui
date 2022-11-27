@@ -20,14 +20,7 @@
   <widget class="QWidget" name="fullGroup">
    <layout class="QVBoxLayout" name="verticalLayout_3">
     <item>
-     <widget class="QTextEdit" name="outputArea">
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-      <property name="placeholderText">
-       <string>Полученные результаты</string>
-      </property>
-     </widget>
+     <widget class="QTableWidget" name="outTable"/>
     </item>
     <item>
      <layout class="QHBoxLayout" name="controlGroup">
@@ -74,7 +67,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="settingsButton">
           <property name="text">
            <string/>
           </property>

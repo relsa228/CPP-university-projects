@@ -1,5 +1,4 @@
 #include "regworkerservice.h"
-#include <sstream>
 
 #define MAX_KEY_LENGTH 255
 #define MAX_VALUE_NAME 16383
@@ -54,7 +53,7 @@ QVector<RegUnit>* RegWorkerService::getNamesOfUnits(HKEY hKey)
             if (retCode == ERROR_SUCCESS) {
                 std::wstring test(&achValue[0]);
                 std::string name(test.begin(), test.end());
-                result->push_back(RegUnit(QString::fromStdString(name), ""));
+                result->push_back(RegUnit(QString::fromStdString(name), "", ""));
             }
         }
     }
@@ -67,35 +66,39 @@ RegUnit RegWorkerService::extractUnit(LPCTSTR subkey, LPCTSTR name, DWORD type, 
     HKEY key;
     TCHAR value[255];
     DWORD valueL = 255;
+    QString typeStr;
+    QString result;
     RegOpenKey(option, subkey, &key);
     RegQueryValueEx(key, name, NULL, &type, (LPBYTE)&value, &valueL);
-    std::wstring test(&value[0]);
-    std::string result(test.begin(), test.end());
 
-    if (type == REG_DWORD)
-    {
+    if (type == REG_DWORD) {
         DWORD dword;
-        if (0 == RegQueryValueEx(key, name, NULL, &type, reinterpret_cast<BYTE*>(&dword), &valueL)){
+        if (0 == RegQueryValueEx(key, name, NULL, &type, reinterpret_cast<BYTE*>(&dword), &valueL)) {
             std::stringstream ss;
             ss << dword;
-            result = ss.str();
-        }
-    }
-    if (type == REG_BINARY)
-    {
-        BYTE bytes[1024];
-        if (0 == RegQueryValueEx(key, name, NULL, &type, reinterpret_cast<LPBYTE>(&bytes), &valueL)){
-            for(BYTE byte: bytes){
-                std::stringstream ss;
-                ss << (int)byte;
-                result = ss.str();
+            result = QString::fromStdString(ss.str());
+            long long temp = result.toInt();
+            result = QString::number(temp, 16);
+            if (result.length() < 8) {
+                QString nulls = "";
+                for (int i = result.length(); i < 8; i++)
+                    nulls += "0";
+                result = nulls + result;
             }
         }
+        typeStr = "REG_DWORD";
+    }
+    else if (type == REG_SZ) {
+        std::wstring test(&value[0]);
+        result = QString::fromStdString(std::string(test.begin(), test.end()));
+        typeStr = "REG_SZ";
     }
 
     RegCloseKey(key);
 
-    return RegUnit(QString::fromWCharArray(name), QString::fromStdString(result));
+    if(type != REG_DWORD && type != REG_SZ)
+        return RegUnit("", "", "");
+    return RegUnit(QString::fromWCharArray(name), result, typeStr);
 }
 
 QVector<RegUnit> *RegWorkerService::extractUnits(LPCTSTR subkey, DWORD type, HKEY option)
@@ -106,8 +109,49 @@ QVector<RegUnit> *RegWorkerService::extractUnits(LPCTSTR subkey, DWORD type, HKE
 
     for(int i = 0; i < result->count(); i++) {
         std::wstring inptName = result->at(i).getUnitName().toStdWString();
-        (*result)[i] = extractUnit(subkey,inptName.c_str(), type, option);
+        RegUnit temp = extractUnit(subkey,inptName.c_str(), type, option);
+        if (temp.getUnitType() != "")
+            (*result)[i] = temp;
+        else{
+            result->remove(i);
+            i--;
+        }
     }
 
     return result;
+}
+
+void RegWorkerService::exportSettings(QVector<RegUnit> *units, QString subkey, HKEY hkey, QString filePath)
+{
+    QString exportSettings ="[";
+
+    if (hkey == HKEY_CLASSES_ROOT)
+        exportSettings += "HKEY_CLASSES_ROOT\\";
+    if (hkey == HKEY_CURRENT_USER)
+        exportSettings += "HKEY_CURRENT_USER\\";
+    if (hkey == HKEY_LOCAL_MACHINE)
+        exportSettings += "HKEY_LOCAL_MACHINE\\";
+    if (hkey == HKEY_USERS)
+        exportSettings += "HKEY_USERS";
+    if (hkey == HKEY_CURRENT_CONFIG)
+        exportSettings += "HKEY_CURRENT_CONFIG\\";
+
+    exportSettings += subkey + "]\n";
+
+    for(auto unit: *units) {
+        exportSettings += "\"" + unit.getUnitName() + "\"=";
+        if(unit.getUnitType() == "REG_SZ")
+            exportSettings += "\"" + unit.getUnitValue() + "\"\n";
+        if(unit.getUnitType() == "REG_DWORD")
+            exportSettings += "dword:" + unit.getUnitValue() + "\n";
+    }
+
+    QFile outFile(filePath);
+
+    if(!outFile.open(QIODevice::WriteOnly))
+        return;
+
+    outFile.write(exportSettings.toUtf8());
+    outFile.flush();
+    outFile.close();
 }

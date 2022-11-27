@@ -1,8 +1,8 @@
 #ifndef SETTINGSWINDOW_H
 #define SETTINGSWINDOW_H
 
-#include <QDialog>
 #include <windows.h>
+#include <QDialog>
 
 namespace Ui {
 class SettingsWindow;

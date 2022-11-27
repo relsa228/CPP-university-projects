@@ -20,13 +20,24 @@ void RegUnit::setUnitName(const QString &newUnitName)
     UnitName = newUnitName;
 }
 
+const QString &RegUnit::getUnitType() const
+{
+    return UnitType;
+}
+
+void RegUnit::setUnitType(const QString &newUnitType)
+{
+    UnitType = newUnitType;
+}
+
 RegUnit::RegUnit()
 {
 
 }
 
-RegUnit::RegUnit(QString name, QString value)
+RegUnit::RegUnit(QString name, QString value, QString type)
 {
     this->UnitName = name;
     this->UnitValue = value;
+    this->UnitType = type;
 }

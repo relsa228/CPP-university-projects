@@ -1,14 +1,16 @@
 #ifndef REGWINDOW_H
 #define REGWINDOW_H
 
-#include <QMainWindow>
 #include <windows.h>
+#include <QMainWindow>
+#include <QFileDialog>
 
 #include <settingswindow.h>
 
 #include <Entities/regunit.h>
 
 #include <Services/regworkerservice.h>
+#include <Services/tableservice.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class RegWindow; }
@@ -25,11 +27,16 @@ public:
 private slots:
     void on_searchButton_clicked();
 
-    void on_pushButton_clicked();
+    virtual void resizeEvent(QResizeEvent *);
+
+    void on_settingsButton_clicked();
+
+    void on_exportButton_clicked();
 
 private:
     Ui::RegWindow *ui;
     RegWorkerService *regWorkerService;
+    TableService *tableService;
     HKEY option;
 
     void regRead(LPCTSTR subkey, LPCTSTR name, DWORD type);

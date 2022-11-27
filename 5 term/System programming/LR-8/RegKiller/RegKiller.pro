@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     Entities/regunit.cpp \
     Services/regworkerservice.cpp \
+    Services/tableservice.cpp \
     main.cpp \
     regwindow.cpp \
     settingswindow.cpp
@@ -18,6 +19,7 @@ SOURCES += \
 HEADERS += \
     Entities/regunit.h \
     Services/regworkerservice.h \
+    Services/tableservice.h \
     regwindow.h \
     settingswindow.h
 

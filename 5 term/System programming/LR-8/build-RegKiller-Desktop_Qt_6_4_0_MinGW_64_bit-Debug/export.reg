@@ -1,0 +1,8 @@
+[HKEY_LOCAL_MACHINE\HARDWARE\DESCRIPTION\System\CentralProcessor\0]
+"Identifier"="AMD64 Family 23 Model 24 Stepping 1"
+"ProcessorNameString"="AMD Ryzen 3 PRO 3300U w/ Radeon Vega Mobile Gfx"
+"VendorIdentifier"="AuthenticAMD"
+"FeatureSet"=dword:383b3dff
+"~MHz"=dword:00000830
+"Update Status"=dword:00000003
+"Platform Specific Field 1"=dword:08108109

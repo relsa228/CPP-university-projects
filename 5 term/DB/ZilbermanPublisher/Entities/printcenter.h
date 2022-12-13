@@ -7,7 +7,7 @@ class PrintCenter
 {
 public:
     PrintCenter();
-    PrintCenter(const QString &adress, int batch_in_progress, int publication_batch);
+    PrintCenter(const QString &id, const QString &adress, int batch_in_progress, int publication_batch);
 
     const QString &getId() const;
     void setId(const QString &newId);

@@ -5,7 +5,8 @@ PrintCenter::PrintCenter()
 
 }
 
-PrintCenter::PrintCenter(const QString &adress, int batch_in_progress, int publication_batch) : adress(adress),
+PrintCenter::PrintCenter(const QString &id, const QString &adress, int batch_in_progress, int publication_batch) : id(id),
+    adress(adress),
     batch_in_progress(batch_in_progress),
     publication_batch(publication_batch)
 {}

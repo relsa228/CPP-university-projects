@@ -43,7 +43,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="price_edit"/>
+           <widget class="QSpinBox" name="price_edit">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>9000000</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -67,7 +74,7 @@
             <second>0</second>
             <year>1999</year>
             <month>12</month>
-            <day>31</day>
+            <day>30</day>
            </datetime>
           </property>
           <property name="displayFormat">
@@ -110,7 +117,14 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="del_edit"/>
+           <widget class="QSpinBox" name="del_edit">
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100000</number>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>

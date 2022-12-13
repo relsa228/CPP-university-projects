@@ -51,7 +51,7 @@ QList<Order*> *DatabaseService::getOrders(QString login)
         QSqlQuery* query = new QSqlQuery(database);
         query->exec("SELECT * FROM batches RIGHT JOIN print_states ON print_states.id = batches.print_state WHERE \"order\"='" + order->getId() + "'");
         while(query->next()) {
-            Batch *batch = new Batch(query->value(0).toString(), query->value(2).toString(), query->value(5).toInt(), query->value(7).toString());
+            Batch *batch = new Batch(query->value(0).toString(), query->value(2).toString(), query->value(5).toInt(), query->value(7).toString(), query->value(3).toString());
             order->batches->push_back(batch);
         }
     }
@@ -77,19 +77,52 @@ QList<Work *> *DatabaseService::getWorks()
     QSqlQuery* query = new QSqlQuery(database);
     query->exec("SELECT * FROM works LEFT JOIN work_types ON work_types.id = works.\"type\"");
     while (query->next())
-        result->push_back(new Work(query->value(0).toString(), query->value(1).toString(), query->value(2).toInt(), query->value(5).toString()));
+        result->push_back(new Work(query->value(0).toString(), query->value(1).toString(), query->value(2).toInt(), new WorkType(query->value(3).toInt(), query->value(5).toString())));
 
     for(Work* work: *result) {
         QSqlQuery* query = new QSqlQuery(database);
         query->exec("SELECT * FROM genre_affiliation LEFT JOIN genres ON genres.id = genre_affiliation.genre WHERE genre_affiliation.\"work\" = '" + work->id + "'");
         while (query->next())
-            work->genres->push_back(query->value(3).toString());
+            work->genres->push_back(new Genre(query->value(2).toInt(), query->value(3).toString()));
 
         query->exec("SELECT * FROM authorship LEFT JOIN authors ON authors.id = authorship.author WHERE authorship.\"work\" = '" + work->id + "'");
         while (query->next())
             work->authors->push_back(new Author(query->value(2).toString(), query->value(3).toString(), query->value(4).toString(), query->value(5).toString(),
                                                query->value(6).toInt()));
     }
+
+    return result;
+}
+
+QList<PrintCenter *> *DatabaseService::getPrintCenters()
+{
+    QList<PrintCenter*> *result = new QList<PrintCenter*>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM print_centers");
+    while(query->next())
+        result->push_back(new PrintCenter(query->value(0).toString(), query->value(1).toString(), query->value(3).toInt(), query->value(4).toInt()));
+
+    return result;
+}
+
+QList<WorkType *> *DatabaseService::getWorkTypes()
+{
+    QList<WorkType *> *result = new QList<WorkType *>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM work_types");
+    while(query->next())
+        result->push_back(new WorkType(query->value(0).toInt(), query->value(1).toString()));
+
+    return result;
+}
+
+QList<Genre *> *DatabaseService::getGenres()
+{
+    QList<Genre *> *result = new QList<Genre *>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM genres");
+    while(query->next())
+        result->push_back(new Genre(query->value(0).toInt(), query->value(1).toString()));
 
     return result;
 }
@@ -110,8 +143,18 @@ void DatabaseService::createOrder(Order *order, QString managerId)
 {
     QSqlQuery* query = new QSqlQuery(database);
     QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd").replace(".", "-");
-    QString zapros = "INSERT INTO orders VALUES (gen_random_uuid(), '" + order->getCustomer() + "', " +
-            QString::number(order->getCost()) + ", '" + currentDate + "', '" + order->getDedline() + "', NULL, 3, '" + managerId + "')";
-    qDebug() << zapros;
-    query->exec(zapros);
+    query->exec("INSERT INTO orders VALUES ('"+ order->getId() +"', '" + order->getCustomer() + "', " +
+                QString::number(order->getCost()) + ", '" + currentDate + "', '" + order->getDedline() + "', NULL, 3, '" + managerId + "')");
+    for(Batch* batch: *order->batches){
+        QString zapros = "INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->order + "', '" + batch->work + "', '" + batch->print_center + "', 3, " +
+                QString::number(batch->count_of_work) + ")";
+        query->exec("INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->order + "', '" + batch->work + "', '" + batch->print_center + "', 3, " +
+                    QString::number(batch->count_of_work) + ")");
+        qDebug() << zapros;
+    }
+}
+
+void DatabaseService::addWork(Work *newWork)
+{
+
 }

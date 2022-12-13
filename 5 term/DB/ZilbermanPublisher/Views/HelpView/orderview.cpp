@@ -10,6 +10,7 @@ OrderView::OrderView(QTableWidget *table, DatabaseService *dbService, Manager *m
     this->dbService = dbService;
     this->wrkManager = manager;
     this->wrkTable = table;
+    batches = new QList<Batch*>();
 
     QList<Customer*>* customers = dbService->getCustomersViaManager(manager->getId());
 
@@ -84,7 +85,17 @@ void OrderView::on_pushButton_3_clicked()
 
 void OrderView::on_add_batch_clicked()
 {
-    BatchesView* batchesView = new BatchesView(ui->batches_table, dbServices, batches, uuid);
+    BatchesView* batchesView = new BatchesView(ui->batches_table, dbService, batches, uuid);
     batchesView->show();
+}
+
+
+void OrderView::on_delete_batch_clicked()
+{
+    int num = ui->del_edit->value();
+    if (num - 1 < batches->count()) {
+        batches->removeAt(num - 1);
+        ui->batches_table->removeRow(num - 1);
+    }
 }
 

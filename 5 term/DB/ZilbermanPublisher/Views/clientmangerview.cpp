@@ -122,8 +122,8 @@ void ClientMangerView::updateWorkTab()
     for(int row = 0; row < works->count(); row++)
     {
         QString genres = "";
-        for(QString str: *works->at(row)->genres)
-            genres += str + ", ";
+        for(Genre *genre: *works->at(row)->genres)
+            genres += genre->getGenre() + ", ";
 
         genres.chop(2);
 
@@ -139,7 +139,7 @@ void ClientMangerView::updateWorkTab()
         ui->work_table->setItem(row, 2, num);
         ui->work_table->item(row, 2)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(works->at(row)->type));
+        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(works->at(row)->type->getType()));
         ui->work_table->setItem(row, 3, money);
         ui->work_table->item(row, 3)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
@@ -174,5 +174,12 @@ void ClientMangerView::updateCustomerTab()
         ui->customer_table->setItem(row, 3, money);
         ui->customer_table->item(row, 3)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
     }
+}
+
+
+void ClientMangerView::on_add_work_clicked()
+{
+    AddWork *addWork = new AddWork(ui->work_table, dbService);
+    addWork->show();
 }
 

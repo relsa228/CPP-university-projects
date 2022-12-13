@@ -6,18 +6,21 @@
 #include <QList>
 
 #include "Entities/author.h"
+#include "Entities/genre.h"
+#include "Entities/worktype.h"
 
 class Work
 {
 public:
-    Work(QString id, QString name, int edition_number, QString type);
+    Work(QString id, QString name, int edition_number, WorkType* type);
+    Work();
 
     QString id;
     QString name;
     int edition_number;
-    QString type;
+    WorkType* type;
 
-    QStringList* genres;
+    QList<Genre*>* genres;
     QList<Author*>* authors;
 };
 

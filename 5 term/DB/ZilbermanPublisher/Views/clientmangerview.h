@@ -11,6 +11,7 @@
 #include <Views/HelpView/addauthor.h>
 #include <Views/HelpView/addcustomerview.h>
 #include <Views/HelpView/orderview.h>
+#include <Views/HelpView/addwork.h>
 
 namespace Ui {
 class ClientMangerView;
@@ -30,6 +31,8 @@ private slots:
     void on_add_customer_clicked();
 
     void on_add_order_clicked();
+
+    void on_add_work_clicked();
 
 private:
     Ui::ClientMangerView *ui;

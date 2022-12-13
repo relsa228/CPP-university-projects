@@ -6,6 +6,7 @@
 
 #include <Entities/order.h>
 #include <Entities/work.h>
+#include "Entities/printcenter.h"
 
 #include <Services/databaseservice.h>
 
@@ -22,7 +23,7 @@ public:
     ~BatchesView();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_add_batch_clicked();
 
 private:
     Ui::BatchesView *ui;
@@ -31,6 +32,7 @@ private:
 
     QList<Batch*> *batches;
     QList<Work*>* works;
+    QList<PrintCenter*> *printcenters;
 
     DatabaseService *dbService;
     QTableWidget *wrkTable;

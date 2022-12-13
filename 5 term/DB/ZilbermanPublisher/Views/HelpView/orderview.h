@@ -31,6 +31,8 @@ private slots:
 
     void on_add_batch_clicked();
 
+    void on_delete_batch_clicked();
+
 private:
     Ui::OrderView *ui;
 

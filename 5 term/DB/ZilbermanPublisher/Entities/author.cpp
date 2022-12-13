@@ -7,3 +7,8 @@ Author::Author(QString id, QString name, QString surname, QString patronymic, in
     this->patronymic = patronymic;
     this->work_count = work_count;
 }
+
+Author::Author()
+{
+
+}

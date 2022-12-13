@@ -12,13 +12,16 @@ SOURCES += \
     Entities/author.cpp \
     Entities/batch.cpp \
     Entities/customer.cpp \
+    Entities/genre.cpp \
     Entities/manager.cpp \
     Entities/order.cpp \
     Entities/printcenter.cpp \
     Entities/work.cpp \
+    Entities/worktype.cpp \
     Services/databaseservice.cpp \
     Views/HelpView/addauthor.cpp \
     Views/HelpView/addcustomerview.cpp \
+    Views/HelpView/addwork.cpp \
     Views/HelpView/batchesview.cpp \
     Views/HelpView/orderview.cpp \
     Views/adminview.cpp \
@@ -31,13 +34,16 @@ HEADERS += \
     Entities/author.h \
     Entities/batch.h \
     Entities/customer.h \
+    Entities/genre.h \
     Entities/manager.h \
     Entities/order.h \
     Entities/printcenter.h \
     Entities/work.h \
+    Entities/worktype.h \
     Services/databaseservice.h \
     Views/HelpView/addauthor.h \
     Views/HelpView/addcustomerview.h \
+    Views/HelpView/addwork.h \
     Views/HelpView/batchesview.h \
     Views/HelpView/orderview.h \
     Views/adminview.h \
@@ -48,6 +54,7 @@ HEADERS += \
 FORMS += \
     Views/HelpView/addauthor.ui \
     Views/HelpView/addcustomerview.ui \
+    Views/HelpView/addwork.ui \
     Views/HelpView/batchesview.ui \
     Views/HelpView/orderview.ui \
     Views/adminview.ui \

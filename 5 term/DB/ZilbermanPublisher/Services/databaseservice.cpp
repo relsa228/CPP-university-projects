@@ -58,3 +58,60 @@ QList<Order*> *DatabaseService::getOrders(QString login)
 
     return result;
 }
+
+QList<Author *> *DatabaseService::getAuthors()
+{
+    QList<Author*>* result = new QList<Author*>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM authors");
+    while (query->next())
+        result->push_back(new Author(query->value(0).toString(), query->value(1).toString(), query->value(2).toString(), query->value(3).toString(),
+                                     query->value(4).toInt()));
+
+    return result;
+}
+
+QList<Work *> *DatabaseService::getWorks()
+{
+    QList<Work*>* result = new QList<Work*>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM works LEFT JOIN work_types ON work_types.id = works.\"type\"");
+    while (query->next())
+        result->push_back(new Work(query->value(0).toString(), query->value(1).toString(), query->value(2).toInt(), query->value(5).toString()));
+
+    for(Work* work: *result) {
+        QSqlQuery* query = new QSqlQuery(database);
+        query->exec("SELECT * FROM genre_affiliation LEFT JOIN genres ON genres.id = genre_affiliation.genre WHERE genre_affiliation.\"work\" = '" + work->id + "'");
+        while (query->next())
+            work->genres->push_back(query->value(3).toString());
+
+        query->exec("SELECT * FROM authorship LEFT JOIN authors ON authors.id = authorship.author WHERE authorship.\"work\" = '" + work->id + "'");
+        while (query->next())
+            work->authors->push_back(new Author(query->value(2).toString(), query->value(3).toString(), query->value(4).toString(), query->value(5).toString(),
+                                               query->value(6).toInt()));
+    }
+
+    return result;
+}
+
+void DatabaseService::addAuthor(QString name, QString surname, QString ptr)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("INSERT INTO authors VALUES (gen_random_uuid(), '" + name + "', '" + surname + "', '" + ptr + "', 0)");
+}
+
+void DatabaseService::addCustomer(QString name, QString spec, QString managerID)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("INSERT INTO customers VALUES (gen_random_uuid(), '" + name + "', '" + spec + "', 0, '" + managerID + "')");
+}
+
+void DatabaseService::createOrder(Order *order, QString managerId)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd").replace(".", "-");
+    QString zapros = "INSERT INTO orders VALUES (gen_random_uuid(), '" + order->getCustomer() + "', " +
+            QString::number(order->getCost()) + ", '" + currentDate + "', '" + order->getDedline() + "', NULL, 3, '" + managerId + "')";
+    qDebug() << zapros;
+    query->exec(zapros);
+}

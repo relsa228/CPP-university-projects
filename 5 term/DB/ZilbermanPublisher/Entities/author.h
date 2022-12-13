@@ -12,7 +12,7 @@ public:
     QString patronymic;
     int work_count;
 
-    Author();
+    Author(QString id, QString name, QString surname, QString patronymic, int work_count);
 };
 
 #endif // AUTHOR_H

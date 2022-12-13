@@ -2,6 +2,12 @@
 #define BATCHESVIEW_H
 
 #include <QMainWindow>
+#include <QTableWidget>
+
+#include <Entities/order.h>
+#include <Entities/work.h>
+
+#include <Services/databaseservice.h>
 
 namespace Ui {
 class BatchesView;
@@ -12,11 +18,22 @@ class BatchesView : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit BatchesView(QWidget *parent = nullptr);
+    explicit BatchesView(QTableWidget *table, DatabaseService *dbService, QList<Batch*>* batches, QString uuid, QWidget *parent = nullptr);
     ~BatchesView();
+
+private slots:
+    void on_pushButton_clicked();
 
 private:
     Ui::BatchesView *ui;
+
+    QString uuid;
+
+    QList<Batch*> *batches;
+    QList<Work*>* works;
+
+    DatabaseService *dbService;
+    QTableWidget *wrkTable;
 };
 
 #endif // BATCHESVIEW_H

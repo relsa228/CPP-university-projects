@@ -47,3 +47,38 @@ const QString &Order::getClose_date() const
 {
     return close_date;
 }
+
+void Order::setId(const QString &newId)
+{
+    id = newId;
+}
+
+void Order::setCustomer(const QString &newCustomer)
+{
+    customer = newCustomer;
+}
+
+void Order::setCost(int newCost)
+{
+    cost = newCost;
+}
+
+void Order::setOpen_date(const QString &newOpen_date)
+{
+    open_date = newOpen_date;
+}
+
+void Order::setDedline(const QString &newDedline)
+{
+    dedline = newDedline;
+}
+
+void Order::setClose_date(const QString &newClose_date)
+{
+    close_date = newClose_date;
+}
+
+void Order::setOrder_state(const QString &newOrder_state)
+{
+    order_state = newOrder_state;
+}

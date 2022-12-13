@@ -29,7 +29,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QComboBox" name="comboBox"/>
+           <widget class="QComboBox" name="customer_box"/>
           </item>
          </layout>
         </item>
@@ -43,7 +43,7 @@
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox"/>
+           <widget class="QSpinBox" name="price_edit"/>
           </item>
          </layout>
         </item>
@@ -59,7 +59,21 @@
          </widget>
         </item>
         <item>
-         <widget class="QDateEdit" name="dateEdit"/>
+         <widget class="QDateEdit" name="dedline_edit">
+          <property name="dateTime">
+           <datetime>
+            <hour>0</hour>
+            <minute>0</minute>
+            <second>0</second>
+            <year>1999</year>
+            <month>12</month>
+            <day>31</day>
+           </datetime>
+          </property>
+          <property name="displayFormat">
+           <string>yyyy.MM.dd</string>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -75,12 +89,12 @@
        </widget>
       </item>
       <item>
-       <widget class="QTableWidget" name="tableWidget"/>
+       <widget class="QTableWidget" name="batches_table"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="add_batch">
           <property name="text">
            <string>Добавить партию</string>
           </property>
@@ -89,14 +103,14 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QPushButton" name="pushButton_2">
+           <widget class="QPushButton" name="delete_batch">
             <property name="text">
              <string>Удалить партию</string>
             </property>
            </widget>
           </item>
           <item>
-           <widget class="QSpinBox" name="spinBox_2"/>
+           <widget class="QSpinBox" name="del_edit"/>
           </item>
          </layout>
         </item>

@@ -10,13 +10,14 @@
 class Work
 {
 public:
-    Work();
+    Work(QString id, QString name, int edition_number, QString type);
 
     QString id;
     QString name;
     int edition_number;
     QString type;
-    QStringList genres;
+
+    QStringList* genres;
     QList<Author*>* authors;
 };
 

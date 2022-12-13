@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>458</width>
-    <height>267</height>
+    <width>455</width>
+    <height>309</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -25,7 +25,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox"/>
+       <widget class="QComboBox" name="work_box"/>
       </item>
       <item>
        <widget class="QLabel" name="label">
@@ -35,10 +35,20 @@
        </widget>
       </item>
       <item>
-       <widget class="QSpinBox" name="spinBox"/>
+       <widget class="QSpinBox" name="count_spin"/>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Печатный центр</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="print_box"/>
+      </item>
+      <item>
+       <widget class="QPushButton" name="add_batch">
         <property name="text">
          <string>Добавить</string>
         </property>
@@ -53,7 +63,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>458</width>
+     <width>455</width>
      <height>25</height>
     </rect>
    </property>

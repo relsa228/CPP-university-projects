@@ -25,7 +25,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit"/>
+       <widget class="QLineEdit" name="name_edit"/>
       </item>
       <item>
        <widget class="QLabel" name="label_2">
@@ -35,7 +35,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="lineEdit_2"/>
+       <widget class="QLineEdit" name="spec_edit"/>
       </item>
      </layout>
     </item>
@@ -45,13 +45,6 @@
        <widget class="QPushButton" name="pushButton">
         <property name="text">
          <string>Добавить</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="pushButton_2">
-        <property name="text">
-         <string>Отменить</string>
         </property>
        </widget>
       </item>

@@ -9,6 +9,8 @@
 #include <Entities/manager.h>
 
 #include <Views/clientmangerview.h>
+#include <Views/printcentermanagerview.h>
+#include <Views/adminview.h>
 
 namespace Ui {
 class LoginView;

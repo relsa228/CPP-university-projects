@@ -2,6 +2,8 @@
 #define CLIENTMANGERVIEW_H
 
 #include <QMainWindow>
+#include <QTimer>
+
 #include <Services/databaseservice.h>
 
 #include <Entities/manager.h>
@@ -12,6 +14,7 @@
 #include <Views/HelpView/addcustomerview.h>
 #include <Views/HelpView/orderview.h>
 #include <Views/HelpView/addwork.h>
+#include <Views/loginview.h>
 
 namespace Ui {
 class ClientMangerView;
@@ -33,16 +36,24 @@ private slots:
     void on_add_order_clicked();
 
     void on_add_work_clicked();
-
-private:
-    Ui::ClientMangerView *ui;
     void updateAuthorTab();
     void updateOrderTab();
     void updateWorkTab();
     void updateCustomerTab();
 
+    virtual void resizeEvent(QResizeEvent *);
+
+    void on_exit_clicked();
+
+    void on_close_clicked();
+
+private:
+    Ui::ClientMangerView *ui;
+
     DatabaseService *dbService;
     Manager *wrkManager;
+
+    QTimer *timer;
 };
 
 #endif // CLIENTMANGERVIEW_H

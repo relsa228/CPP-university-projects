@@ -19,7 +19,7 @@ class AddCustomerView : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit AddCustomerView(QTableWidget *table, DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
+    explicit AddCustomerView(DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
     ~AddCustomerView();
 
 private slots:
@@ -30,7 +30,6 @@ private:
 
     DatabaseService *dbService;
     Manager *wrkManager;
-    QTableWidget *wrkTable;
 };
 
 #endif // ADDCUSTOMERVIEW_H

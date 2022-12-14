@@ -49,11 +49,9 @@ void BatchesView::on_add_batch_clicked()
         if (printCent->getAdress() == print)
             currentPrint = printCent;
 
-    batches->push_back(new Batch(uuid, currentWork->id, ui->count_spin->text().toInt(), "in_plane", currentPrint->getId()));
+    batches->push_back(new Batch(uuid, currentWork->id, currentPrint->getId(), "in_plane", ui->count_spin->text().toInt()));
 
-    wrkTable->setColumnCount(3);
     wrkTable->setRowCount(batches->count());
-    wrkTable->setHorizontalHeaderLabels(QStringList() << "Работа" << "Кол-во копий" << "Печатный центр");
 
     for(int row = 0; row < batches->count(); row++)
     {

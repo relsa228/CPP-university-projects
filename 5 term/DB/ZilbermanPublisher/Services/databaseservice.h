@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QSqlQuery>
 #include <QList>
+#include <QUuid>
 
 #include "Entities/genre.h"
 #include "Entities/manager.h"
@@ -17,6 +18,9 @@
 #include "Entities/work.h"
 #include "Entities/printcenter.h"
 #include "Entities/worktype.h"
+#include "Entities/position.h"
+
+#include "Services/loggerservice.h"
 
 class DatabaseService
 {
@@ -29,16 +33,29 @@ public:
     QList<Author*>* getAuthors();
     QList<Work*>* getWorks();
     QList<PrintCenter*>* getPrintCenters();
+    PrintCenter* getPrintCenterViaManager(Manager* manager);
     QList<WorkType*>* getWorkTypes();
     QList<Genre*>* getGenres();
+    QList<Batch*>* getReadyBatches(QString printCenterId);
+    QList<Batch*>* getOnWorkBatches(QString printCenterId);
+    QList<Manager*>* getManagers();
+    QList<Position*>* getPositions();
+    QList<Log*>* getLogs();
 
-    void addAuthor(QString name, QString surname, QString ptr);
+    void addAuthor(QString name, QString surname, QString ptr, QString managerID);
     void addCustomer(QString name, QString spec, QString managerID);
     void createOrder(Order* order,  QString managerId);
-    void addWork(Work* newWork);
+    void addWork(Work* newWork, QString managerID);
+    void addManager(Manager *newManager, QString password);
+
+    void changeOrderStatus(QString orderId, QString managerId);
+    void changeBatchPrintStatus(QString batchId, QString status, QString managerId);
+    void changeManagerStatus(QString managerId, QString status);
+    void changeManagerPassword(QString managerId, QString newPassword);
 
 private:
     QSqlDatabase database;
+    LoggerService *logger;
 };
 
 #endif // DATABASESERVICE_H

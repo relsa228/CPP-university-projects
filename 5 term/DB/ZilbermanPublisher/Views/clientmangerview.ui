@@ -44,7 +44,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <widget class="QWidget" name="tab">
        <attribute name="title">
@@ -66,34 +66,83 @@
              <widget class="QTableWidget" name="order_table"/>
             </item>
             <item>
-             <widget class="QPushButton" name="add_order">
-              <property name="text">
-               <string>Открыть заказ</string>
-              </property>
-             </widget>
+             <layout class="QHBoxLayout" name="horizontalLayout_5">
+              <item>
+               <widget class="QPushButton" name="add_order">
+                <property name="text">
+                 <string>Открыть заказ</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QPushButton" name="close">
+                <property name="text">
+                 <string>Закрыть заказ</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="close_box"/>
+              </item>
+             </layout>
             </item>
            </layout>
           </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Заказчики</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_10">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_5">
           <item>
-           <layout class="QVBoxLayout" name="verticalLayout_5">
-            <item>
-             <widget class="QLabel" name="label_3">
-              <property name="text">
-               <string>Заказчики</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QTableWidget" name="customer_table"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="add_customer">
-              <property name="text">
-               <string>Добавить заказчика</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Заказчики</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="customer_table"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="add_customer">
+            <property name="text">
+             <string>Добавить заказчика</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Произведения</string>
+       </attribute>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QVBoxLayout" name="verticalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_6">
+            <property name="text">
+             <string>Произведения</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QTableWidget" name="work_table"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="add_work">
+            <property name="text">
+             <string>Добавить произведение</string>
+            </property>
+           </widget>
           </item>
          </layout>
         </item>
@@ -127,31 +176,17 @@
             </item>
            </layout>
           </item>
-          <item>
-           <layout class="QVBoxLayout" name="verticalLayout_9">
-            <item>
-             <widget class="QLabel" name="label_6">
-              <property name="text">
-               <string>Произведения</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QTableWidget" name="work_table"/>
-            </item>
-            <item>
-             <widget class="QPushButton" name="add_work">
-              <property name="text">
-               <string>Добавить произведение</string>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </item>
          </layout>
         </item>
        </layout>
       </widget>
+     </widget>
+    </item>
+    <item>
+     <widget class="QPushButton" name="exit">
+      <property name="text">
+       <string>Выйти</string>
+      </property>
      </widget>
     </item>
    </layout>

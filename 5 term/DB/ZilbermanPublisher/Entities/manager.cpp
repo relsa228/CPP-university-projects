@@ -50,3 +50,25 @@ bool Manager::getIs_active() const
 {
     return is_active;
 }
+
+const QString &Manager::getLastAuthTime() const
+{
+    return lastAuthTime;
+}
+
+Manager::Manager(const QString &id, const QString &name, const QString &surname, const QString &patronymic, const QString &username, const QString &position, const QString &lastAuthTime, bool is_active) : id(id),
+    name(name),
+    surname(surname),
+    patronymic(patronymic),
+    username(username),
+    position(position),
+    lastAuthTime(lastAuthTime),
+    is_active(is_active)
+{}
+
+Manager::Manager(const QString &name, const QString &surname, const QString &patronymic, const QString &username, const QString &position) : name(name),
+    surname(surname),
+    patronymic(patronymic),
+    username(username),
+    position(position)
+{}

@@ -8,6 +8,7 @@ DatabaseService::DatabaseService()
     database.setPassword("root");
     if(!database.open())
         QMessageBox::critical(0, "Соединение не установлено", database.lastError().text());
+    logger = new LoggerService(database);
 }
 
 Manager *DatabaseService::getManager(QString login, QString password)
@@ -46,15 +47,6 @@ QList<Order*> *DatabaseService::getOrders(QString login)
     while (query->next())
         result->push_back(new Order(query->value(0).toString(), query->value(11).toString(), query->value(2).toInt(), query->value(3).toString(),
                                     query->value(4).toString(), query->value(5).toString(), query->value(9).toString()));
-
-    for(Order* order: *result) {
-        QSqlQuery* query = new QSqlQuery(database);
-        query->exec("SELECT * FROM batches RIGHT JOIN print_states ON print_states.id = batches.print_state WHERE \"order\"='" + order->getId() + "'");
-        while(query->next()) {
-            Batch *batch = new Batch(query->value(0).toString(), query->value(2).toString(), query->value(5).toInt(), query->value(7).toString(), query->value(3).toString());
-            order->batches->push_back(batch);
-        }
-    }
 
     return result;
 }
@@ -105,6 +97,15 @@ QList<PrintCenter *> *DatabaseService::getPrintCenters()
     return result;
 }
 
+PrintCenter *DatabaseService::getPrintCenterViaManager(Manager *manager)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM print_centers WHERE manager = '" + manager->getId() + "'");
+    query->next();
+    PrintCenter *pc = new PrintCenter(query->value(0).toString(), query->value(1).toString(), query->value(3).toInt(), query->value(4).toInt());
+    return pc;
+}
+
 QList<WorkType *> *DatabaseService::getWorkTypes()
 {
     QList<WorkType *> *result = new QList<WorkType *>();
@@ -127,16 +128,78 @@ QList<Genre *> *DatabaseService::getGenres()
     return result;
 }
 
-void DatabaseService::addAuthor(QString name, QString surname, QString ptr)
+QList<Batch *> *DatabaseService::getReadyBatches(QString printCenterId)
 {
+    QList<Batch *> * result = new QList<Batch *>();
     QSqlQuery* query = new QSqlQuery(database);
-    query->exec("INSERT INTO authors VALUES (gen_random_uuid(), '" + name + "', '" + surname + "', '" + ptr + "', 0)");
+    query->exec("SELECT * FROM batches WHERE print_center = '" + printCenterId + "' AND print_state = 4");
+    while(query->next())
+        result->push_back(new Batch(query->value(0).toString(), query->value(1).toString(), query->value(2).toString(),
+                                    query->value(3).toString(), "ready", query->value(5).toInt()));
+
+    return result;
+}
+
+QList<Batch *> *DatabaseService::getOnWorkBatches(QString printCenterId)
+{
+    QList<Batch *> * result = new QList<Batch *>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM batches WHERE print_center = '" + printCenterId + "' AND print_state = 3");
+    while(query->next())
+        result->push_back(new Batch(query->value(0).toString(), query->value(1).toString(), query->value(2).toString(),
+                                    query->value(3).toString(), "on_work", query->value(5).toInt()));
+
+    return result;
+}
+
+QList<Manager *> *DatabaseService::getManagers()
+{
+    QList<Manager*>* result = new QList<Manager*>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM managers WHERE position <> 3");
+    while(query->next())
+        result->push_back(new Manager(query->value(0).toString(), query->value(1).toString(), query->value(2).toString(), query->value(3).toString(),
+                                      query->value(4).toString(), query->value(5).toString(), query->value(7).toString(), query->value(8).toBool()));
+    return result;
+}
+
+QList<Position *> *DatabaseService::getPositions()
+{
+    QList<Position*>* result = new QList<Position*>();
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("SELECT * FROM positions");
+    while(query->next())
+        result->push_back(new Position (query->value(0).toInt(), query->value(1).toString()));
+    return result;
+}
+
+QList<Log *> *DatabaseService::getLogs()
+{
+    return logger->getLogs();
+}
+
+void DatabaseService::addAuthor(QString name, QString surname, QString ptr, QString managerId)
+{
+    QString uuid = QUuid::createUuid().toString();
+    uuid.remove('}');
+    uuid.remove('{');
+
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("INSERT INTO authors VALUES ('" + uuid + "', '" + name + "', '" + surname + "', '" + ptr + "', 0)");
+
+    logger->writeLog(new Log(managerId, "add", uuid, "author"));
 }
 
 void DatabaseService::addCustomer(QString name, QString spec, QString managerID)
 {
+    QString uuid = QUuid::createUuid().toString();
+    uuid.remove('}');
+    uuid.remove('{');
+
     QSqlQuery* query = new QSqlQuery(database);
     query->exec("INSERT INTO customers VALUES (gen_random_uuid(), '" + name + "', '" + spec + "', 0, '" + managerID + "')");
+
+    logger->writeLog(new Log(managerID, "add", uuid, "customer"));
 }
 
 void DatabaseService::createOrder(Order *order, QString managerId)
@@ -145,16 +208,63 @@ void DatabaseService::createOrder(Order *order, QString managerId)
     QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd").replace(".", "-");
     query->exec("INSERT INTO orders VALUES ('"+ order->getId() +"', '" + order->getCustomer() + "', " +
                 QString::number(order->getCost()) + ", '" + currentDate + "', '" + order->getDedline() + "', NULL, 3, '" + managerId + "')");
-    for(Batch* batch: *order->batches){
-        QString zapros = "INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->order + "', '" + batch->work + "', '" + batch->print_center + "', 3, " +
-                QString::number(batch->count_of_work) + ")";
+
+    for(Batch* batch: *order->batches)
         query->exec("INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->order + "', '" + batch->work + "', '" + batch->print_center + "', 3, " +
                     QString::number(batch->count_of_work) + ")");
-        qDebug() << zapros;
-    }
+
+    logger->writeLog(new Log(managerId, "add", order->getId(), "order"));
 }
 
-void DatabaseService::addWork(Work *newWork)
+void DatabaseService::addWork(Work *newWork, QString managerId)
 {
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("INSERT INTO works VALUES ('" + newWork->id + "', '" + newWork->name + "', " +
+                QString::number(newWork->edition_number) + ", " + QString::number(newWork->type->getId()) + ")");
 
+    for(Author* author: *newWork->authors)
+        query->exec("INSERT INTO authorship VALUES ('" + author->id + "', '" + newWork->id + "')");
+
+    for(Genre* genre: *newWork->genres)
+        query->exec("INSERT INTO genre_affiliation VALUES (" + QString::number(genre->getId()) + ", '" + newWork->id + "')");
+
+    logger->writeLog(new Log(managerId, "add", newWork->id, "work"));
+}
+
+void DatabaseService::addManager(Manager *newManager, QString password)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd HH:mm:ss").replace(".", "-");
+    query->exec("INSERT INTO managers VALUES (gen_random_uuid(), '" + newManager->getName() + "', '" + newManager->getSurname() +
+                "', '" + newManager->getPatronymic() + "', '" + newManager->getUsername() + "', " + newManager->getPosition() +
+                ", crypt('" + password + "', gen_salt('bf', 8)), '" + currentDate + "', true)");
+}
+
+void DatabaseService::changeOrderStatus(QString orderId, QString managerId)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd").replace(".", "-");
+    query->exec("UPDATE orders SET order_state = 5, close_date = '" + currentDate + "' WHERE id = '" + orderId + "'");
+
+    logger->writeLog(new Log(managerId, "change", orderId, "order"));
+}
+
+void DatabaseService::changeBatchPrintStatus(QString batchId, QString status, QString managerId)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("UPDATE batches SET print_state = " + status + " WHERE id = '" + batchId + "'");
+
+    logger->writeLog(new Log(managerId, "change", batchId, "batch"));
+}
+
+void DatabaseService::changeManagerStatus(QString managerId, QString status)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("UPDATE managers SET is_active = " + status + " WHERE id = '" + managerId + "'");
+}
+
+void DatabaseService::changeManagerPassword(QString managerId, QString newPassword)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    query->exec("UPDATE managers SET password = crypt('" + newPassword + "', gen_salt('bf', 8)) WHERE id = '" + managerId + "'");
 }

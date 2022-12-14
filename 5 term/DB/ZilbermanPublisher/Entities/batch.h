@@ -6,7 +6,8 @@
 class Batch
 {
 public:
-    Batch(QString orderID, QString work, int count_of_work, QString print_state, QString print_center);
+    Batch(QString orderID, QString work, QString print_center, QString print_state, int count_of_work);
+    Batch(QString id, QString orderID, QString work, QString print_center, QString print_state, int count_of_work);
 
     QString id;
     QString order;

@@ -19,7 +19,7 @@ class AddAuthor : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit AddAuthor(QTableWidget *table, DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
+    explicit AddAuthor(DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
     ~AddAuthor();
 
 private slots:
@@ -30,7 +30,6 @@ private:
 
     DatabaseService *dbService;
     Manager *wrkManager;
-    QTableWidget *wrkTable;
 };
 
 #endif // ADDAUTHOR_H

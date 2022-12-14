@@ -17,7 +17,7 @@ class AddWork : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit AddWork(QTableWidget *table, DatabaseService *dbService, QWidget *parent = nullptr);
+    explicit AddWork(DatabaseService *dbService, QString mangerId, QWidget *parent = nullptr);
     ~AddWork();
 
 private slots:
@@ -31,16 +31,18 @@ private slots:
 
     void on_add_work_clicked();
 
+    virtual void resizeEvent(QResizeEvent *);
+
 private:
     Ui::AddWork *ui;
 
     DatabaseService *dbService;
-    QTableWidget *wrkTable;
 
     QList<Author*> *authors;
     QList<Genre*> *genres;
     QList<WorkType*> *workTypes;
 
+    QString mangerId;
     Work* newWork;
 };
 

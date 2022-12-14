@@ -1,19 +1,21 @@
 #include "addwork.h"
 #include "ui_addwork.h"
 
-AddWork::AddWork(QTableWidget *table, DatabaseService *dbService, QWidget *parent) :
+AddWork::AddWork(DatabaseService *dbService, QString mangerId, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::AddWork)
 {
     ui->setupUi(this);
     this->dbService = dbService;
-    this->wrkTable = table;
     this->authors = dbService->getAuthors();
     this->genres = dbService->getGenres();
     this->workTypes = dbService->getWorkTypes();
+    this->mangerId = mangerId;
 
     newWork = new Work();
     newWork->id = QUuid::createUuid().toString();
+    newWork->id.remove('}');
+    newWork->id.remove('{');
 
     QStringList* authorsList = new QStringList();
     QStringList* typesList = new QStringList();
@@ -67,7 +69,6 @@ void AddWork::on_add_author_clicked()
     ui->author_tab->item(ui->author_tab->rowCount() - 1, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 }
 
-
 void AddWork::on_add_genre_clicked()
 {
     QString generStr = ui->genre_box->currentText();
@@ -86,7 +87,6 @@ void AddWork::on_add_genre_clicked()
     ui->genre_tab->item(ui->genre_tab->rowCount() - 1, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 }
 
-
 void AddWork::on_del_author_clicked()
 {
     int num = ui->auth_del_num->value();
@@ -95,7 +95,6 @@ void AddWork::on_del_author_clicked()
         ui->author_tab->removeRow(num - 1);
     }
 }
-
 
 void AddWork::on_del_genre_clicked()
 {
@@ -106,7 +105,6 @@ void AddWork::on_del_genre_clicked()
     }
 }
 
-
 void AddWork::on_add_work_clicked()
 {
     for(WorkType* workType: *workTypes)
@@ -116,8 +114,28 @@ void AddWork::on_add_work_clicked()
     newWork->name = ui->name_edit->text();
     newWork->edition_number = ui->edit_num->value();
 
-    dbService->addWork(newWork);
+    dbService->addWork(newWork, mangerId);
+    this->close();
+}
 
-    //внесение в таблицу
+void AddWork::resizeEvent(QResizeEvent *)
+{
+    float newSizeAuthor = ui->author_tab->size().width()/2;
+    if (newSizeAuthor > 33) {
+        if(ui->author_tab->rowCount() == 0)
+            for (int i = 0; i < 2; i++)
+                ui->author_tab->setColumnWidth(i, newSizeAuthor);
+        else
+            for (int i = 0; i < 2; i++)
+                ui->author_tab->setColumnWidth(i, newSizeAuthor - 6.5);
+    }
+
+    float newSizeGenre = ui->genre_tab->size().width();
+    if (newSizeGenre > 33) {
+        if(ui->genre_tab->rowCount() == 0)
+            ui->genre_tab->setColumnWidth(0, newSizeGenre);
+        else
+            ui->genre_tab->setColumnWidth(0, newSizeGenre - 6.5);
+    }
 }
 

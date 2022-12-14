@@ -12,11 +12,13 @@ ClientMangerView::ClientMangerView(DatabaseService *dbService, Manager *manager,
 
     ui->name_lable->setText(wrkManager->getSurname() + " " + wrkManager->getName() + " " + wrkManager->getPatronymic());
     ui->id_lable->setText("ID: " + wrkManager->getId());
-///////////////////////////////////////////////////////////////////
-    updateCustomerTab();
-    updateOrderTab();
-    updateAuthorTab();
-    updateWorkTab();
+
+    timer = new QTimer();
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateCustomerTab()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateOrderTab()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateAuthorTab()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateWorkTab()));
+    timer->start(100);
 }
 
 ClientMangerView::~ClientMangerView()
@@ -26,24 +28,24 @@ ClientMangerView::~ClientMangerView()
 
 void ClientMangerView::on_add_author_clicked()
 {
-    AddAuthor* addAuthorView = new AddAuthor(ui->author_table, dbService, wrkManager);
+    AddAuthor* addAuthorView = new AddAuthor(dbService, wrkManager);
     addAuthorView->show();
 }
 
 void ClientMangerView::on_add_customer_clicked()
 {
-    AddCustomerView* addCustomerView = new AddCustomerView(ui->customer_table, dbService, wrkManager);
+    AddCustomerView* addCustomerView = new AddCustomerView(dbService, wrkManager);
     addCustomerView->show();
 }
 
 void ClientMangerView::on_add_order_clicked()
 {
-    OrderView* orderView = new OrderView(ui->order_table, dbService, wrkManager);
+    OrderView* orderView = new OrderView(dbService, wrkManager);
     orderView->show();
 }
 
 void ClientMangerView::updateAuthorTab()
-{
+{   
     QList<Author*>* authors = dbService->getAuthors();
     ui->author_table->setColumnCount(5);
     ui->author_table->setRowCount(authors->count());
@@ -74,7 +76,7 @@ void ClientMangerView::updateAuthorTab()
 }
 
 void ClientMangerView::updateOrderTab()
-{
+{   
     QList<Order*>* orders = dbService->getOrders(wrkManager->getId());
     ui->order_table->setColumnCount(7);
     ui->order_table->setRowCount(orders->count());
@@ -150,7 +152,7 @@ void ClientMangerView::updateWorkTab()
 }
 
 void ClientMangerView::updateCustomerTab()
-{
+{    
     QList<Customer*>* customers = dbService->getCustomersViaManager(wrkManager->getId());
     ui->customer_table->setColumnCount(4);
     ui->customer_table->setRowCount(customers->count());
@@ -176,10 +178,69 @@ void ClientMangerView::updateCustomerTab()
     }
 }
 
+void ClientMangerView::resizeEvent(QResizeEvent *)
+{
+    float newSizeCustomer = ui->customer_table->size().width()/4;
+    if (newSizeCustomer > 33) {
+        if(ui->customer_table->rowCount() == 0)
+            for (int i = 0; i < 4; i++)
+                ui->customer_table->setColumnWidth(i, newSizeCustomer);
+        else
+            for (int i = 0; i < 4; i++)
+                ui->customer_table->setColumnWidth(i, newSizeCustomer - 6.5);
+    }
+
+    float newSizeOrder = ui->order_table->size().width()/7;
+    if (newSizeOrder > 33) {
+        if(ui->order_table->rowCount() == 0)
+            for (int i = 0; i < 7; i++)
+                ui->order_table->setColumnWidth(i, newSizeOrder);
+        else
+            for (int i = 0; i < 7; i++)
+                ui->order_table->setColumnWidth(i, newSizeOrder - 6.5);
+    }
+
+    float newSizeAuthor = ui->author_table->size().width()/5;
+    if (newSizeAuthor > 33) {
+        if(ui->author_table->rowCount() == 0)
+            for (int i = 0; i < 5; i++)
+                ui->author_table->setColumnWidth(i, newSizeAuthor);
+        else
+            for (int i = 0; i < 5; i++)
+                ui->author_table->setColumnWidth(i, newSizeAuthor - 6.5);
+    }
+
+    float newSizeWork = ui->work_table->size().width()/5;
+    if (newSizeWork > 33) {
+        if(ui->work_table->rowCount() == 0)
+            for (int i = 0; i < 5; i++)
+                ui->work_table->setColumnWidth(i, newSizeWork);
+        else
+            for (int i = 0; i < 5; i++)
+                ui->work_table->setColumnWidth(i, newSizeWork - 6.5);
+    }
+}
 
 void ClientMangerView::on_add_work_clicked()
 {
-    AddWork *addWork = new AddWork(ui->work_table, dbService);
+    AddWork *addWork = new AddWork(dbService, wrkManager->getId());
     addWork->show();
+}
+
+void ClientMangerView::on_exit_clicked()
+{
+    LoginView* loginView = new LoginView();
+    loginView->show();
+    this->close();
+}
+
+
+void ClientMangerView::on_close_clicked()
+{
+     QList<Order*>* orders = dbService->getOrders(wrkManager->getId());
+     int num = ui->close_box->value();
+
+     if(orders->count() > num - 1)
+        dbService->changeOrderStatus(orders->at(num - 1)->getId(), wrkManager->getId());
 }
 

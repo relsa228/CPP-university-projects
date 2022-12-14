@@ -23,7 +23,7 @@ class OrderView : public QMainWindow
     Q_OBJECT
 
 public:
-    explicit OrderView(QTableWidget *table, DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
+    explicit OrderView(DatabaseService *dbService, Manager *manager, QWidget *parent = nullptr);
     ~OrderView();
 
 private slots:
@@ -33,6 +33,8 @@ private slots:
 
     void on_delete_batch_clicked();
 
+    virtual void resizeEvent(QResizeEvent *);
+
 private:
     Ui::OrderView *ui;
 
@@ -40,7 +42,6 @@ private:
 
     DatabaseService *dbService;
     Manager *wrkManager;
-    QTableWidget *wrkTable;
 
     Order *orderModel;
     QList<Batch*> *batches;

@@ -29,6 +29,14 @@ void LoginView::on_pushButton_clicked()
         ClientMangerView *clientView = new ClientMangerView(this->dbService, loginUser);
         clientView->show();
     }
+    else if(loginUser->getPosition() == "Print center manager") {
+        PrintCenterManagerView *printCenterView = new PrintCenterManagerView(this->dbService, loginUser);
+        printCenterView->show();
+    }
+    else if(loginUser->getPosition() == "Administrator") {
+        AdminView *adminView = new AdminView(this->dbService, loginUser);
+        adminView->show();
+    }
 
     this->close();
 }

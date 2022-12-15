@@ -32,7 +32,7 @@ void PrintCenterManagerView::on_start_work_clicked()
 {
     int num = ui->start_box->value() - 1;
     if (num < onWorkBatches->count())
-        dbService->changeBatchPrintStatus(onWorkBatches->at(num)->id, "4", wrkManager->getId());
+        dbService->changeBatchPrintStatus(onWorkBatches->at(num)->getId(), "4", wrkManager->getId());
     else {
         QMessageBox msg = QMessageBox();
         msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
@@ -57,15 +57,15 @@ void PrintCenterManagerView::updateOnWorkTable()
 
     for(int row = 0; row < onWorkBatches->count(); row++)
     {
-        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->order));
+        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->getOrder()));
         ui->on_work_table->setItem(row, 0, accName);
         ui->on_work_table->item(row, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->work));
+        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->getWork()));
         ui->on_work_table->setItem(row, 1, bank);
         ui->on_work_table->item(row, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->count_of_work));
+        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(onWorkBatches->at(row)->getCount_of_work()));
         ui->on_work_table->setItem(row, 2, num);
         ui->on_work_table->item(row, 2)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
     }
@@ -81,15 +81,15 @@ void PrintCenterManagerView::updateReadyTable()
 
     for(int row = 0; row < readyBatches->count(); row++)
     {
-        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->order));
+        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->getOrder()));
         ui->ready_table->setItem(row, 0, accName);
         ui->ready_table->item(row, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->work));
+        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->getWork()));
         ui->ready_table->setItem(row, 1, bank);
         ui->ready_table->item(row, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->count_of_work));
+        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(readyBatches->at(row)->getCount_of_work()));
         ui->ready_table->setItem(row, 2, num);
         ui->ready_table->item(row, 2)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
     }
@@ -99,7 +99,7 @@ void PrintCenterManagerView::on_deny_work_clicked()
 {
     int num = ui->deny_box->value() - 1;
     if (num < readyBatches->count())
-        dbService->changeBatchPrintStatus(readyBatches->at(num)->id, "3", wrkManager->getId());
+        dbService->changeBatchPrintStatus(readyBatches->at(num)->getId(), "3", wrkManager->getId());
     else {
         QMessageBox msg = QMessageBox();
         msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));

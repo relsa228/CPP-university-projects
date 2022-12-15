@@ -15,13 +15,23 @@ public:
     Work(QString id, QString name, int edition_number, WorkType* type);
     Work();
 
+    QList<Genre*>* genres;
+    QList<Author*>* authors;
+    const QString &getId() const;
+    const QString &getName() const;
+    int getEdition_number() const;
+    WorkType *getType() const;
+
+    void setId(const QString &newId);
+    void setName(const QString &newName);
+    void setEdition_number(int newEdition_number);
+    void setType(WorkType *newType);
+
+private:
     QString id;
     QString name;
     int edition_number;
     WorkType* type;
-
-    QList<Genre*>* genres;
-    QList<Author*>* authors;
 };
 
 #endif // WORK_H

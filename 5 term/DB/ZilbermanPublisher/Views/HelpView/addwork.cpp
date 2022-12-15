@@ -13,16 +13,14 @@ AddWork::AddWork(DatabaseService *dbService, QString mangerId, QWidget *parent) 
     this->mangerId = mangerId;
 
     newWork = new Work();
-    newWork->id = QUuid::createUuid().toString();
-    newWork->id.remove('}');
-    newWork->id.remove('{');
+    newWork->setId(QUuid::createUuid().toString().remove('}').remove('{'));
 
     QStringList* authorsList = new QStringList();
     QStringList* typesList = new QStringList();
     QStringList* genresList = new QStringList();
 
     for(Author* author: *authors)
-        authorsList->push_back(author->id + ": " + author->surname + " " + author->name + " " + author->patronymic);
+        authorsList->push_back(author->getId() + ": " + author->getSurname() + " " + author->getName() + " " + author->getPatronymic());
 
     for(WorkType* workType: *workTypes)
         typesList->push_back(workType->getType());
@@ -50,7 +48,7 @@ void AddWork::on_add_author_clicked()
 {
     QString authorStr = ui->author_box->currentText();
     for(Author* author: *authors) {
-        if(author->id + ": " + author->surname + " " + author->name + " " + author->patronymic == authorStr) {
+        if(author->getId() + ": " + author->getSurname() + " " + author->getName() + " " + author->getPatronymic() == authorStr) {
             if (newWork->authors->contains(author))
                 return;
             newWork->authors->push_back(author);
@@ -59,12 +57,12 @@ void AddWork::on_add_author_clicked()
 
     ui->author_tab->setRowCount(ui->author_tab->rowCount() + 1);
 
-    QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(newWork->authors->last()->id));
+    QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(newWork->authors->last()->getId()));
     ui->author_tab->setItem(ui->author_tab->rowCount() - 1, 0, accName);
     ui->author_tab->item(ui->author_tab->rowCount() - 1, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-    QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(newWork->authors->last()->surname + " " +
-                                                               newWork->authors->last()->name + " " + newWork->authors->last()->patronymic));
+    QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(newWork->authors->last()->getSurname() + " " +
+                                                               newWork->authors->last()->getName() + " " + newWork->authors->last()->getPatronymic()));
     ui->author_tab->setItem(ui->author_tab->rowCount() - 1, 1, bank);
     ui->author_tab->item(ui->author_tab->rowCount() - 1, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 }
@@ -127,10 +125,10 @@ void AddWork::on_add_work_clicked()
 {
     for(WorkType* workType: *workTypes)
         if (workType->getType() == ui->type_box->currentText())
-                newWork->type = workType;
+                newWork->setType(workType);
 
-    newWork->name = ui->name_edit->text();
-    newWork->edition_number = ui->edit_num->value();
+    newWork->setName(ui->name_edit->text());
+    newWork->setEdition_number(ui->edit_num->value());
 
     dbService->addWork(newWork, mangerId);
     this->close();

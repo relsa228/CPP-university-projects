@@ -12,3 +12,28 @@ Author::Author()
 {
 
 }
+
+const QString &Author::getId() const
+{
+    return id;
+}
+
+const QString &Author::getName() const
+{
+    return name;
+}
+
+const QString &Author::getSurname() const
+{
+    return surname;
+}
+
+const QString &Author::getPatronymic() const
+{
+    return patronymic;
+}
+
+int Author::getWork_count() const
+{
+    return work_count;
+}

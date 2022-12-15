@@ -86,11 +86,12 @@ QList<Work *> *DatabaseService::getWorks()
 
     for(Work* work: *result) {
         QSqlQuery* query = new QSqlQuery(database);
-        query->exec("SELECT * FROM genre_affiliation LEFT JOIN genres ON genres.id = genre_affiliation.genre WHERE genre_affiliation.\"work\" = '" + work->id + "'");
+        query->exec("SELECT * FROM genre_affiliation LEFT JOIN genres ON genres.id = genre_affiliation.genre WHERE genre_affiliation.\"work\" = '" + work->getId() + "'");
         while (query->next())
             work->genres->push_back(new Genre(query->value(2).toInt(), query->value(3).toString()));
 
-        query->exec("SELECT * FROM authorship LEFT JOIN authors ON authors.id = authorship.author WHERE authorship.\"work\" = '" + work->id + "'");
+        query->exec("SELECT * FROM authorship LEFT JOIN authors ON authors.id = authorship.author WHERE authorship.\"work\" = '" + work->getId()
+                    + "'");
         while (query->next())
             work->authors->push_back(new Author(query->value(2).toString(), query->value(3).toString(), query->value(4).toString(), query->value(5).toString(),
                                                query->value(6).toInt()));
@@ -223,8 +224,8 @@ void DatabaseService::createOrder(Order *order, QString managerId)
                 QString::number(order->getCost()) + ", '" + currentDate + "', '" + order->getDedline() + "', NULL, 3, '" + managerId + "')");
 
     for(Batch* batch: *order->batches)
-        query->exec("INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->order + "', '" + batch->work + "', '" + batch->print_center + "', 3, " +
-                    QString::number(batch->count_of_work) + ")");
+        query->exec("INSERT INTO batches VALUES (gen_random_uuid(), '" + batch->getOrder() + "', '" + batch->getWork() + "', '" + batch->getPrint_center() + "', 3, " +
+                    QString::number(batch->getCount_of_work()) + ")");
 
     logger->writeLog(new Log(managerId, "add", order->getId(), "order"));
 }
@@ -232,16 +233,16 @@ void DatabaseService::createOrder(Order *order, QString managerId)
 void DatabaseService::addWork(Work *newWork, QString managerId)
 {
     QSqlQuery* query = new QSqlQuery(database);
-    query->exec("INSERT INTO works VALUES ('" + newWork->id + "', '" + newWork->name + "', " +
-                QString::number(newWork->edition_number) + ", " + QString::number(newWork->type->getId()) + ")");
+    query->exec("INSERT INTO works VALUES ('" + newWork->getId() + "', '" + newWork->getName() + "', " +
+                QString::number(newWork->getEdition_number()) + ", " + QString::number(newWork->getType()->getId()) + ")");
 
     for(Author* author: *newWork->authors)
-        query->exec("INSERT INTO authorship VALUES ('" + author->id + "', '" + newWork->id + "')");
+        query->exec("INSERT INTO authorship VALUES ('" + author->getId() + "', '" + newWork->getId() + "')");
 
     for(Genre* genre: *newWork->genres)
-        query->exec("INSERT INTO genre_affiliation VALUES (" + QString::number(genre->getId()) + ", '" + newWork->id + "')");
+        query->exec("INSERT INTO genre_affiliation VALUES (" + QString::number(genre->getId()) + ", '" + newWork->getId() + "')");
 
-    logger->writeLog(new Log(managerId, "add", newWork->id, "work"));
+    logger->writeLog(new Log(managerId, "add", newWork->getId(), "work"));
 }
 
 void DatabaseService::addManager(Manager *newManager, QString password)

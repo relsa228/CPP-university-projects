@@ -53,23 +53,23 @@ void ClientMangerView::updateAuthorTab()
 
     for(int row = 0; row < authors->count(); row++)
     {
-        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(authors->at(row)->id));
+        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(authors->at(row)->getId()));
         ui->author_table->setItem(row, 0, accName);
         ui->author_table->item(row, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(authors->at(row)->name));
+        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(authors->at(row)->getName()));
         ui->author_table->setItem(row, 1, bank);
         ui->author_table->item(row, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(authors->at(row)->surname));
+        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(authors->at(row)->getSurname()));
         ui->author_table->setItem(row, 2, num);
         ui->author_table->item(row, 2)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(authors->at(row)->patronymic));
+        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(authors->at(row)->getPatronymic()));
         ui->author_table->setItem(row, 3, money);
         ui->author_table->item(row, 3)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *dedline = new QTableWidgetItem(tr("%1").arg(authors->at(row)->work_count));
+        QTableWidgetItem *dedline = new QTableWidgetItem(tr("%1").arg(authors->at(row)->getWork_count()));
         ui->author_table->setItem(row, 4, dedline);
         ui->author_table->item(row, 4)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
     }
@@ -129,19 +129,19 @@ void ClientMangerView::updateWorkTab()
 
         genres.chop(2);
 
-        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(works->at(row)->id));
+        QTableWidgetItem *accName = new QTableWidgetItem(tr("%1").arg(works->at(row)->getId()));
         ui->work_table->setItem(row, 0, accName);
         ui->work_table->item(row, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(works->at(row)->name));
+        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(works->at(row)->getName()));
         ui->work_table->setItem(row, 1, bank);
         ui->work_table->item(row, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(works->at(row)->edition_number));
+        QTableWidgetItem *num = new QTableWidgetItem(tr("%1").arg(works->at(row)->getEdition_number()));
         ui->work_table->setItem(row, 2, num);
         ui->work_table->item(row, 2)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(works->at(row)->type->getType()));
+        QTableWidgetItem *money = new QTableWidgetItem(tr("%1").arg(works->at(row)->getType()->getType()));
         ui->work_table->setItem(row, 3, money);
         ui->work_table->item(row, 3)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 

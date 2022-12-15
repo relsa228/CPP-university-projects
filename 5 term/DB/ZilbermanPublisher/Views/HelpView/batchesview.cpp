@@ -19,7 +19,7 @@ BatchesView::BatchesView(QTableWidget *table, DatabaseService *dbService, QList<
 
     QStringList* custList = new QStringList();
     for(Work* work: *works)
-        custList->push_back(work->id + ": " + work->name);
+        custList->push_back(work->getId() + ": " + work->getName());
 
     ui->work_box->addItems(*custList);
 
@@ -40,7 +40,7 @@ void BatchesView::on_add_batch_clicked()
     QString work = ui->work_box->currentText();
     Work* currentWork = new Work();
     for(Work* wrk: *works)
-        if (wrk->id + ": " + wrk->name == work)
+        if (wrk->getId() + ": " + wrk->getName() == work)
             currentWork = wrk;
 
     QString print = ui->print_box->currentText();
@@ -49,19 +49,19 @@ void BatchesView::on_add_batch_clicked()
         if (printCent->getAdress() == print)
             currentPrint = printCent;
 
-    batches->push_back(new Batch(uuid, currentWork->id, currentPrint->getId(), "in_plane", ui->count_spin->text().toInt()));
+    batches->push_back(new Batch(uuid, currentWork->getId(), currentPrint->getId(), "in_plane", ui->count_spin->text().toInt()));
 
     wrkTable->setRowCount(batches->count());
 
     for(int row = 0; row < batches->count(); row++)
     {
-        QString work = batches->at(row)->work;
+        QString work = batches->at(row)->getWork();
         QString currentWork = "";
         for(Work* wrk: *works)
-            if (wrk->id == work)
-                currentWork = wrk->name;
+            if (wrk->getId() == work)
+                currentWork = wrk->getName();
 
-        QString print = batches->at(row)->print_center;
+        QString print = batches->at(row)->getPrint_center();
         QString currentPrint = "";
         for(PrintCenter* printCent: *printcenters)
             if (printCent->getId() == print)
@@ -71,7 +71,7 @@ void BatchesView::on_add_batch_clicked()
         wrkTable->setItem(row, 0, accName);
         wrkTable->item(row, 0)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 
-        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(batches->at(row)->count_of_work));
+        QTableWidgetItem *bank = new QTableWidgetItem(tr("%1").arg(batches->at(row)->getCount_of_work()));
         wrkTable->setItem(row, 1, bank);
         wrkTable->item(row, 1)->setFlags(Qt::ItemIsDragEnabled|Qt::ItemIsUserCheckable|Qt::ItemIsSelectable);
 

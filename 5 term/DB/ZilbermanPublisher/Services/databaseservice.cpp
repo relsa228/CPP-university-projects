@@ -6,8 +6,15 @@ DatabaseService::DatabaseService()
     database.setDatabaseName("publisher_controller_base");
     database.setUserName("postgres");
     database.setPassword("root");
-    if(!database.open())
-        QMessageBox::critical(0, "Соединение не установлено", database.lastError().text());
+    if(!database.open()) {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Соединение не установлено");
+        msg.setIcon(msg.Critical);
+        msg.setText(database.lastError().text());
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
     logger = new LoggerService(database);
 }
 
@@ -23,7 +30,13 @@ Manager *DatabaseService::getManager(QString login, QString password)
                            query->value(4).toString(), query->value(5).toString(), query->value(6).toBool());
     }
     else {
-        QMessageBox::critical(0, "Ошибка", "Пользователь не найден");
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка");
+        msg.setIcon(msg.Critical);
+        msg.setText("Пользователь не найден");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
         return NULL;
     }
 }
@@ -267,4 +280,11 @@ void DatabaseService::changeManagerPassword(QString managerId, QString newPasswo
 {
     QSqlQuery* query = new QSqlQuery(database);
     query->exec("UPDATE managers SET password = crypt('" + newPassword + "', gen_salt('bf', 8)) WHERE id = '" + managerId + "'");
+}
+
+void DatabaseService::updateLastAuthTime(QString managerId)
+{
+    QSqlQuery* query = new QSqlQuery(database);
+    QString currentDate = QDateTime::currentDateTime().toString("yyyy.MM.dd HH:mm:ss").replace(".", "-");
+    query->exec("UPDATE managers SET last_auth_time = '" + currentDate + "' WHERE id = '" + managerId + "'");
 }

@@ -11,7 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Добавить заказчика</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="../../Icons.qrc">
+    <normaloff>:/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png</normaloff>:/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png</iconset>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -64,6 +68,8 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="../../Icons.qrc"/>
+ </resources>
  <connections/>
 </ui>

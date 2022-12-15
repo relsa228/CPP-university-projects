@@ -242,5 +242,14 @@ void ClientMangerView::on_close_clicked()
 
      if(orders->count() > num - 1)
         dbService->changeOrderStatus(orders->at(num - 1)->getId(), wrkManager->getId());
+     else {
+         QMessageBox msg = QMessageBox();
+         msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+         msg.setWindowTitle("Ошибка ввода");
+         msg.setIcon(msg.Critical);
+         msg.setText("Заказа не существует");
+         msg.addButton("Принято", msg.AcceptRole);
+         msg.exec();
+     }
 }
 

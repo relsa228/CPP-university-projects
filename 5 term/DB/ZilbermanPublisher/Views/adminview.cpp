@@ -142,13 +142,21 @@ void AdminView::resizeEvent(QResizeEvent *)
     }
 }
 
-
 void AdminView::on_block_manager_clicked()
 {
     QString managerId = "";
     int num = ui->choose_box->value() - 1;
     if(num < managers->count())
         managerId = managers->at(num)->getId();
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Пользователя не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 
     dbService->changeManagerStatus(managerId, "false");
 }
@@ -160,6 +168,15 @@ void AdminView::on_unblock_manager_clicked()
     int num = ui->choose_box->value() - 1;
     if(num < managers->count())
         managerId = managers->at(num)->getId();
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Пользователя не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 
     dbService->changeManagerStatus(managerId, "true");
 }
@@ -171,6 +188,15 @@ void AdminView::on_change_password_clicked()
     int num = ui->choose_box->value() - 1;
     if(num < managers->count())
         managerId = managers->at(num)->getId();
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Пользователя не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 
     ChangePasswordView* chPass = new ChangePasswordView(managerId, dbService);
     chPass->show();

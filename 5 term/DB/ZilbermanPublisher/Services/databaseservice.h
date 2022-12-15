@@ -52,6 +52,7 @@ public:
     void changeBatchPrintStatus(QString batchId, QString status, QString managerId);
     void changeManagerStatus(QString managerId, QString status);
     void changeManagerPassword(QString managerId, QString newPassword);
+    void updateLastAuthTime(QString managerId);
 
 private:
     QSqlDatabase database;

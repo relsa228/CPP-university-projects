@@ -33,6 +33,15 @@ void PrintCenterManagerView::on_start_work_clicked()
     int num = ui->start_box->value() - 1;
     if (num < onWorkBatches->count())
         dbService->changeBatchPrintStatus(onWorkBatches->at(num)->id, "4", wrkManager->getId());
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Партии не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 }
 
 void PrintCenterManagerView::updateOnWorkTable()
@@ -91,6 +100,15 @@ void PrintCenterManagerView::on_deny_work_clicked()
     int num = ui->deny_box->value() - 1;
     if (num < readyBatches->count())
         dbService->changeBatchPrintStatus(readyBatches->at(num)->id, "3", wrkManager->getId());
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Партии не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 }
 
 void PrintCenterManagerView::on_exit_clicked()

@@ -23,7 +23,24 @@ void LoginView::on_pushButton_clicked()
     if (loginUser == NULL)
         return;
 
-    QMessageBox::information(0, "Добро пожаловать", "Здравствуйте, " + loginUser->getName() + " " + loginUser->getPatronymic() + "!");
+    if(!loginUser->getIs_active()) {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка");
+        msg.setIcon(msg.Critical);
+        msg.setText("Учетная запись заблокирована");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+        return;
+    }
+
+    QMessageBox msg = QMessageBox();
+    msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+    msg.setWindowTitle("Добро пожаловать");
+    msg.setIcon(msg.Information);
+    msg.setText("Здравствуйте, " + loginUser->getName() + " " + loginUser->getPatronymic() + "!");
+    msg.addButton("Принято", msg.AcceptRole);
+    msg.exec();
 
     if(loginUser->getPosition() == "Client manager") {
         ClientMangerView *clientView = new ClientMangerView(this->dbService, loginUser);
@@ -38,6 +55,7 @@ void LoginView::on_pushButton_clicked()
         adminView->show();
     }
 
+    dbService->updateLastAuthTime(loginUser->getId());
     this->close();
 }
 

@@ -94,6 +94,15 @@ void AddWork::on_del_author_clicked()
         newWork->authors->removeAt(num - 1);
         ui->author_tab->removeRow(num - 1);
     }
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Автора не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 }
 
 void AddWork::on_del_genre_clicked()
@@ -102,6 +111,15 @@ void AddWork::on_del_genre_clicked()
     if (num - 1 < newWork->genres->count()) {
         newWork->genres->removeAt(num - 1);
         ui->genre_tab->removeRow(num - 1);
+    }
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Жанра не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
     }
 }
 

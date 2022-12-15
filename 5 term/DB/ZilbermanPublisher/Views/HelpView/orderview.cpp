@@ -63,6 +63,15 @@ void OrderView::on_delete_batch_clicked()
         batches->removeAt(num - 1);
         ui->batches_table->removeRow(num - 1);
     }
+    else {
+        QMessageBox msg = QMessageBox();
+        msg.setWindowIcon(QIcon(":/Icons/MainIcon/Resources/MainIcons/free-icon-book-4341050.png"));
+        msg.setWindowTitle("Ошибка ввода");
+        msg.setIcon(msg.Critical);
+        msg.setText("Партии не существует");
+        msg.addButton("Принято", msg.AcceptRole);
+        msg.exec();
+    }
 }
 
 void OrderView::resizeEvent(QResizeEvent *)

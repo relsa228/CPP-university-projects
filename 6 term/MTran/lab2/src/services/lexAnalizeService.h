@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <regex>
 
 #include "../supportingFiles/lexicalBase.h"
 #include "../supportingFiles/tokenType.h"

@@ -10,6 +10,5 @@ int main(int argc, const char** argv) {
         std::cout << "Name: " << var->getData() << std::endl;
         std::cout << "Description: " << var->getDescription() << std::endl << std::endl;
     }
-
     return 0;
 }

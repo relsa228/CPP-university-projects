@@ -8,7 +8,7 @@ std::vector<Token *> *LexAnalizeService::initLexAnalize(std::string filename) {
     std::vector<Token *> *resultVector = new std::vector<Token *>();
     checkDataValNames(filename, resultVector);
     checkCodeValNames(filename, resultVector);
-
+    checkCodeLex(filename, resultVector);
     return resultVector;
 }
 
@@ -24,13 +24,13 @@ void LexAnalizeService::checkDataValNames(std::string filename, std::vector<Toke
     std::string dataRow;
 
     while(getline(codeFile, dataRow)) {
-        auto chkPos = dataRow.find(".data");
+        auto chkPos = dataRow.find("data");
         if (chkPos != std::string::npos)
             break;
     }
 
     while(getline(codeFile, dataRow)) {
-        auto chkPos = dataRow.find(".code");
+        auto chkPos = dataRow.find("code");
         if (chkPos != std::string::npos)
             break;
 
@@ -67,13 +67,13 @@ void LexAnalizeService::checkCodeValNames(std::string filename, std::vector<Toke
     std::string codeRow;
 
     while(getline(codeFile, codeRow)) {
-        auto chkPos = codeRow.find(".code");
+        auto chkPos = codeRow.find("code");
         if (chkPos != std::string::npos)
             break;
     }
 
     while(getline(codeFile, codeRow)) {
-        auto chkPos = codeRow.find(".data");
+        auto chkPos = codeRow.find("data");
         if (chkPos != std::string::npos)
             break;
 
@@ -99,4 +99,43 @@ void LexAnalizeService::checkCodeValNames(std::string filename, std::vector<Toke
 }
 
 void LexAnalizeService::checkCodeLex(std::string filename, std::vector<Token *> *tokenList) {
+    std::ifstream codeFile(filename);
+    std::string codeRow;
+
+    while(getline(codeFile, codeRow)) {
+        auto chkPos = codeRow.find("code");
+        if (chkPos != std::string::npos)
+            break;
+    }
+
+    while(getline(codeFile, codeRow)) {
+        auto chkPos = codeRow.find("data");
+        if (chkPos != std::string::npos)
+            break;
+
+        trim(codeRow);
+        codeRow += " ";
+        std::string tokenName;
+        for(auto ch : codeRow) {
+            if(!tokenName.empty() && (ch == ' ' || ch == ',')) {
+                std::transform(tokenName.begin(), tokenName.end(), tokenName.begin(), ::toupper);
+                trim(tokenName);
+                if (std::find(commandList.begin(), commandList.end(), tokenName) != commandList.end()) 
+                    tokenList->push_back(new Token(TokenType::Command, tokenName, "Command lexem"));
+                else if (std::find(conditionalCrossing.begin(), conditionalCrossing.end(), tokenName) != conditionalCrossing.end()) 
+                    tokenList->push_back(new Token(TokenType::ConditionalCrossing, tokenName, "Conditional crossing lexem"));
+                else if (std::find(registerList.begin(), registerList.end(), tokenName) != registerList.end()) 
+                    tokenList->push_back(new Token(TokenType::Register, tokenName, "Register lexem"));
+                else if (std::find(interruptionsList.begin(), interruptionsList.end(), tokenName) != interruptionsList.end()) 
+                    tokenList->push_back(new Token(TokenType::Interruption, tokenName, "Interruption lexem"));
+                else if (std::find(nameList.begin(), nameList.end(), tokenName) != nameList.end()) {}
+                else 
+                   printf("Lexem error");
+                
+                tokenName.clear();
+            }
+            else 
+                tokenName += ch;
+        }
+    }
 }

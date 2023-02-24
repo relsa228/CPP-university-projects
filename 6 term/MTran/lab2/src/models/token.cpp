@@ -19,32 +19,8 @@ void Token::setDescription(std::string description) {
     this->description = description;
 }
 
-std::string Token::getTokenType() {
-    switch (this->tokenType) {
-        case TokenType::Command:
-            return "Command";
-
-        case TokenType::DataType:
-            return "Data type";
-
-        case TokenType::ConditionalCrossing:
-            return "Conditional crossing";
-
-        case TokenType::Name:
-            return "Name";
-
-        case TokenType::Sign:
-            return "Sign";
-        
-        case TokenType::Register:
-            return "Register";
-
-        case TokenType::Interruption:
-            return "Interruption";
-
-        default:
-            return "No type";
-    }
+TokenType Token::getTokenType() {
+    return this->tokenType;
 }
 
 std::string Token::getData() {

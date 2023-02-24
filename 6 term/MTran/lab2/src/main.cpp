@@ -2,13 +2,15 @@
 #include <vector>
 
 #include "services/lexAnalizeService.h"
+#include "services/tableCreateService.h"
 
 int main(int argc, const char** argv) {
+    std::string filename = argv[1];
+
     LexAnalizeService* lexAnalizeService = new LexAnalizeService();
-    std::vector<Token *> *tokenList = lexAnalizeService->initLexAnalize("test.asm");
-    for(auto var : *tokenList) {
-        std::cout << "Name: " << var->getData() << std::endl;
-        std::cout << "Description: " << var->getDescription() << std::endl << std::endl;
-    }
+    TableCreateService* tableCreateService = new TableCreateService();
+
+    std::vector<Token *> *tokenList = lexAnalizeService->initLexAnalize(filename);
+    tableCreateService->createTable(tokenList);
     return 0;
 }

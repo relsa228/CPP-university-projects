@@ -17,7 +17,7 @@ public:
     void setData(std::string data);
     void setDescription(std::string description);
 
-    std::string getTokenType();
+    TokenType getTokenType();
     std::string getData();
     std::string getDescription();
 };

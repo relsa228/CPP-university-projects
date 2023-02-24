@@ -147,6 +147,8 @@ std::vector<std::string> interruptionsList = {
     "17H",
     "18H",
     "19H",
+    "20H",
+    "21H",
     "1AH",
     "1BH",
     "1CH",

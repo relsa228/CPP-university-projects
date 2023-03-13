@@ -59,7 +59,7 @@ void LexAnalizeService::checkDataValNames(std::string filename, std::vector<Toke
         std::transform(dataType.begin(), dataType.end(), dataType.begin(), ::toupper);
         if (std::find(dataTypesList.begin(), dataTypesList.end(), dataType) != dataTypesList.end()) {
             nameList.push_back(valName);
-            tokenList->push_back(new Token(TokenType::Name, valName, dataType + " variable"));
+            tokenList->push_back(new Token(TokenType::Name, valName, dataType + " variable", -1));
         }
         else 
             printf("DATATYPE ERROR: at line %d\n", lineCounter);
@@ -94,8 +94,10 @@ void LexAnalizeService::checkCodeValNames(std::string filename, std::vector<Toke
 
         std::string pointName;
         for(auto ch : codeRow) {
-            if(ch == ':')
-                tokenList->push_back(new Token(TokenType::Name, pointName, "Code point name"));
+            if(ch == ':'){
+                tokenList->push_back(new Token(TokenType::Name, pointName, "Code point name", lineCounter));
+                codePointNames.push_back(new Token(TokenType::Name, pointName, "Code point name", lineCounter));
+            }
             pointName += ch;
         }
     }
@@ -143,24 +145,24 @@ void LexAnalizeService::checkCodeLex(std::string filename, std::vector<Token *> 
                 if (isName || tokenName.empty())
                     continue;
                 else if (std::regex_match(tokenName, std::regex("^'[\\w|\\W]+'$")))
-                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant string value"));
+                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant string value", lineCounter));
                 else if (std::regex_match(tokenName, std::regex("^\\d+$")))
-                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant numeric value"));
+                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant numeric value", lineCounter));
                 else if (std::find(commandList.begin(), commandList.end(), tokenName) != commandList.end()) 
-                    tokenList->push_back(new Token(TokenType::Command, tokenName, "Command lexem"));
+                    tokenList->push_back(new Token(TokenType::Command, tokenName, "Command lexem", lineCounter));
                 else if (std::find(conditionalCrossing.begin(), conditionalCrossing.end(), tokenName) != conditionalCrossing.end()) 
-                    tokenList->push_back(new Token(TokenType::ConditionalCrossing, tokenName, "Conditional crossing lexem"));
+                    tokenList->push_back(new Token(TokenType::ConditionalCrossing, tokenName, "Conditional crossing lexem", lineCounter));
                 else if (std::find(registerList.begin(), registerList.end(), tokenName) != registerList.end()) 
-                    tokenList->push_back(new Token(TokenType::Register, tokenName, "Register lexem"));
+                    tokenList->push_back(new Token(TokenType::Register, tokenName, "Register lexem", lineCounter));
                 else if (std::find(interruptionsList.begin(), interruptionsList.end(), tokenName) != interruptionsList.end()) 
-                    tokenList->push_back(new Token(TokenType::Interruption, tokenName, "Interruption lexem"));
+                    tokenList->push_back(new Token(TokenType::Interruption, tokenName, "Interruption lexem", lineCounter));
                 else if (std::find(signList.begin(), signList.end(), tokenName) != signList.end()) 
-                    tokenList->push_back(new Token(TokenType::Sign, tokenName, "Sign lexem"));
+                    tokenList->push_back(new Token(TokenType::Sign, tokenName, "Sign lexem", lineCounter));
                 else
                     printf("LEXEM ERROR: at line %d lexem: %s\n", lineCounter, tokenName.c_str());
                 tokenName.clear();
             }
-            else 
+            else if(ch != ' ' || ch != ',' || ch != ':')
                 tokenName += ch;
         }
     }

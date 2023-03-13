@@ -1,9 +1,10 @@
 #include "token.h"
 
-Token::Token(TokenType tokenType, std::string data, std::string description) :
+Token::Token(TokenType tokenType, std::string data, std::string description, int position) :
 data(data),
 description(description),
-tokenType(tokenType) {}
+tokenType(tokenType),
+position(position) {}
 
 Token::~Token() {}
 
@@ -29,4 +30,8 @@ std::string Token::getData() {
 
 std::string Token::getDescription() {
     return this->description;
+}
+
+int Token::getPosition() {
+    return this->position;
 }

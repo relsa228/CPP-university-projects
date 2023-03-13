@@ -20,7 +20,6 @@ std::vector<std::string> commandList = {
     "POP",
     "LOOP",
     "RET",
-    "LEA",
     "CALL",
     "DEC",
     "PROC",

@@ -9,6 +9,7 @@
 #include <regex>
 
 #include "../supportingFiles/lexicalBase.h"
+#include "../supportingFiles/syntaxBase.h"
 #include "../supportingFiles/tokenType.h"
 
 #include "../models/token.h"

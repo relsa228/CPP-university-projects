@@ -1,6 +1,7 @@
 #include "databaseservice.h"
 #include <QtSql>
 #include <iostream>
+#include "obfuscate.h"
 
 DataBaseService::DataBaseService()
 {
@@ -21,15 +22,15 @@ QSqlDatabase DataBaseService::OpenDataBase()
 void DataBaseService::CreateShema(QSqlDatabase db)
 {
     QSqlQuery* query = new QSqlQuery(db);
-    query->exec("CREATE TABLE UserTable(UserId INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Surname TEXT, RoleID TEXT, Telephone TEXT, Email TEXT, CompanyName TEXT, "
-                "PassportSer TEXT, PassportNum TEXT, Password TEXT, AproveStatus TEXT)");
-    query->exec("CREATE TABLE BankTable(BIK INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Budget INT)");
-    query->exec("CREATE TABLE CompanyTable(Name TEXT, Type TEXT, UNP TEXT, BankBIK TEXT, Adress TEXT)");
-    query->exec("CREATE TABLE AccTable(AccName TEXT, UserName TEXT, BankName TEXT, AccId INTEGER PRIMARY KEY AUTOINCREMENT, Money INT, Type TEXT)");
-    query->exec("CREATE TABLE CreditTable(CreditId INTEGER PRIMARY KEY AUTOINCREMENT, BankName TEXT, UserName TEXT, Money INT, AccIndex INT, Term INT, Procent INT, AproveStatus TEXT)");
-    query->exec("CREATE TABLE SalaryTable(ProjectId INTEGER PRIMARY KEY AUTOINCREMENT, BankIndex INT, PrevBankIndex INT, CompanyName TEXT, UserName TEXT, AproveBySpec TEXT, AproveBySystem TEXT, AproveStatus TEXT)");
-    query->exec("CREATE TABLE TransferTable(TransferId INTEGER PRIMARY KEY AUTOINCREMENT, InitName TEXT, SenderId INT, TargetId INT, Sum INT, Aprove TEXT)");
-    query->exec("CREATE TABLE CreditPlans(BankName TEXT, Procent INT, Term INT)");
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE UserTable(UserId INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Surname TEXT, RoleID TEXT, Telephone TEXT, Email TEXT, CompanyName TEXT, "
+                             "PassportSer TEXT, PassportNum TEXT, Password TEXT, AproveStatus TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE BankTable(BIK INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Budget INT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE CompanyTable(Name TEXT, Type TEXT, UNP TEXT, BankBIK TEXT, Adress TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE AccTable(AccName TEXT, UserName TEXT, BankName TEXT, AccId INTEGER PRIMARY KEY AUTOINCREMENT, Money INT, Type TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE CreditTable(CreditId INTEGER PRIMARY KEY AUTOINCREMENT, BankName TEXT, UserName TEXT, Money INT, AccIndex INT, Term INT, Procent INT, AproveStatus TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE SalaryTable(ProjectId INTEGER PRIMARY KEY AUTOINCREMENT, BankIndex INT, PrevBankIndex INT, CompanyName TEXT, UserName TEXT, AproveBySpec TEXT, AproveBySystem TEXT, AproveStatus TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE TransferTable(TransferId INTEGER PRIMARY KEY AUTOINCREMENT, InitName TEXT, SenderId INT, TargetId INT, Sum INT, Aprove TEXT)"));
+    query->exec((const char*) AY_OBFUSCATE("CREATE TABLE CreditPlans(BankName TEXT, Procent INT, Term INT)"));
 }
 
 User* DataBaseService::Login(QString email, QString password)
@@ -38,25 +39,25 @@ User* DataBaseService::Login(QString email, QString password)
     User* user = new User();
     QSqlDatabase db = this->OpenDataBase();
     QSqlQuery* query = new QSqlQuery(db);
-    QString sqlInquiry = "SELECT * FROM UserTable WHERE Email = '";
+    QString sqlInquiry = (const char*) AY_OBFUSCATE("SELECT * FROM UserTable WHERE Email = '");
     sqlInquiry.append(email);
-    sqlInquiry.append("' AND Password = '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("' AND Password = '"));
     sqlInquiry.append(encrPassword);
-    sqlInquiry.append("'");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("'"));
     query->exec(sqlInquiry);
     query->next();
     QString checkPassword = query->value(9).toString();
     QString checkAproveStatus = query->value(10).toString();
     if(encrPassword != checkPassword || checkPassword == "")
         return user;
-    else if(checkAproveStatus == "Waiting")
+    else if(checkAproveStatus == (const char*) AY_OBFUSCATE("Waiting"))
     {
-        user->setPassportSeries("0");
+        user->setPassportSeries((const char*) AY_OBFUSCATE("0"));
         return user;
     }
-    else if(checkAproveStatus == "ban")
+    else if(checkAproveStatus == (const char*) AY_OBFUSCATE("ban"))
     {
-        user->setPassportSeries("-1");
+        user->setPassportSeries((const char*) AY_OBFUSCATE("-1"));
         return user;
     }
     else
@@ -78,25 +79,25 @@ void DataBaseService::AddCustomer(Customer* customer, QString password)
     QString encrPassword = QCryptographicHash::hash(password.toLatin1(),QCryptographicHash::Md5).toHex();
     QSqlDatabase db = this->OpenDataBase();
     QSqlQuery* query = new QSqlQuery(db);
-    QString sqlInquiry = "INSERT INTO UserTable(Name, Surname, RoleID, Telephone, Email, CompanyName, PassportSer, PassportNum, Password, AproveStatus) values('";
+    QString sqlInquiry = (const char*) AY_OBFUSCATE("INSERT INTO UserTable(Name, Surname, RoleID, Telephone, Email, CompanyName, PassportSer, PassportNum, Password, AproveStatus) values('");
     sqlInquiry.append(customer->getName());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getSurname());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getRoleId());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getTelephone());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getEmail());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getCompanyName());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getPassportSeries());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(customer->getPassportNum());
-    sqlInquiry.append("', '");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', '"));
     sqlInquiry.append(encrPassword);
-    sqlInquiry.append("', 'Waiting')");
+    sqlInquiry.append((const char*) AY_OBFUSCATE("', 'Waiting')"));
     query->exec(sqlInquiry);
 }
 void DataBaseService::SetCustomerStatus(int index, QString verdict, QString name)

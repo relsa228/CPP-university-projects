@@ -63,7 +63,7 @@ int main() {
 	listen(sListen, SOMAXCONN);
 
 	SOCKET newConnection;
-	for(int i = 0; i < 150; i++) {
+	for(int i = 0; i < 5; i++) {
 		newConnection = accept(sListen, (SOCKADDR*)&addr, &sizeOfAddr);
 		if(newConnection == 0) {
 			std::cout << "Error #2\n";

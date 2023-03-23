@@ -76,7 +76,8 @@ HEADERS += \
     Srvices/databaseservice.h \
     Srvices/enterpricespecialistservice.h \
     Srvices/managerservice.h \
-    Srvices/operatorservice.h
+    Srvices/operatorservice.h \
+    obfuscate.h
 
 FORMS += \
     Forms/LilForms/addacc.ui \

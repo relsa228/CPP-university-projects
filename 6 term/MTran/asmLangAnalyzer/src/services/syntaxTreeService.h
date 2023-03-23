@@ -5,12 +5,12 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <regex>
 
 #include "../supportingFiles/lexicalBase.h"
 #include "../supportingFiles/syntaxBase.h"
 #include "../supportingFiles/tokenType.h"
 
-#include "../models/syntaxTreeNode.h"
 #include "../models/syntaxTreeNode.h"
 
 class SyntaxTreeService {

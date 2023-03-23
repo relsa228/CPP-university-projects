@@ -22,29 +22,71 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
         if(terminals->size() != 1)
             printf("Wrong number of arguments at line %d\n", lineCounter);
         else {
+            TokenType tokenType = TokenType::Command;
+            
+            if (std::find(nameList.begin(), nameList.end(), terminals->at(0)) == nameList.end()) {
+                std::transform(terminals->at(0).begin(), terminals->at(0).end(), terminals->at(0).begin(), ::toupper);
+
+                if (std::find(registerList.begin(), registerList.end(), terminals->at(0)) != registerList.end())
+                    tokenType = TokenType::Register;
+                else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(0)) != interruptionsList.end())
+                    tokenType = TokenType::Interruption;
+                else if (std::regex_match(terminals->at(0), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(0), std::regex("^\\d+$")))        
+                    tokenType = TokenType::Name;
+            }
+
             SyntaxTreeNode *node = new SyntaxTreeNode();
             currentParent->addChild(node);
             node->setData(new Token(TokenType::Command, tokenName, "Command lexem", lineCounter));
 
             SyntaxTreeNode *childNode = new SyntaxTreeNode();
             node->addChild(childNode);
-            childNode->setData(new Token(TokenType::Name, terminals->at(0), "Terminal", lineCounter));
+            childNode->setData(new Token(tokenType, terminals->at(0), "Terminal", lineCounter));
         }
     } else if (std::find(twoTerminalCommands.begin(), twoTerminalCommands.end(), tokenName) != twoTerminalCommands.end()) {
         if(terminals->size() != 2)
             printf("Wrong number of arguments at line %d\n", lineCounter);
         else {
+            TokenType tokenTypeF = TokenType::Command;
+            TokenType tokenTypeS = TokenType::Command;
+
+            if (std::find(nameList.begin(), nameList.end(), terminals->at(0)) == nameList.end()) {
+                std::transform(terminals->at(0).begin(), terminals->at(0).end(), terminals->at(0).begin(), ::toupper);
+
+                if (std::find(registerList.begin(), registerList.end(), terminals->at(0)) != registerList.end())
+                    tokenTypeF = TokenType::Register;
+                else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(0)) != interruptionsList.end())
+                    tokenTypeF = TokenType::Interruption;
+                else if (std::regex_match(terminals->at(0), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(0), std::regex("^\\d+$")))        
+                    tokenTypeF = TokenType::Name;
+            }
+            else
+                tokenTypeF = TokenType::Name;
+           
+            if (std::find(nameList.begin(), nameList.end(), terminals->at(1)) == nameList.end()) {
+                std::transform(terminals->at(1).begin(), terminals->at(1).end(), terminals->at(1).begin(), ::toupper);
+
+                if (std::find(registerList.begin(), registerList.end(), terminals->at(1)) != registerList.end())
+                    tokenTypeS = TokenType::Register;
+                else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(1)) != interruptionsList.end())
+                    tokenTypeS = TokenType::Interruption;
+                else if (std::regex_match(terminals->at(1), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(1), std::regex("^\\d+$")))        
+                    tokenTypeS = TokenType::Name;
+            }
+            else
+                tokenTypeS = TokenType::Name;
+
             SyntaxTreeNode *node = new SyntaxTreeNode();
             currentParent->addChild(node);
             node->setData(new Token(TokenType::Command, tokenName, "Command lexem", lineCounter));
 
             SyntaxTreeNode *childNode = new SyntaxTreeNode();
             node->addChild(childNode);
-            childNode->setData(new Token(TokenType::Name, terminals->at(0), "Terminal", lineCounter));
+            childNode->setData(new Token(tokenTypeF, terminals->at(0), "Terminal", lineCounter));
 
             SyntaxTreeNode *childNodeSec = new SyntaxTreeNode();
             node->addChild(childNodeSec);
-            childNodeSec->setData(new Token(TokenType::Name, terminals->at(1), "Terminal", lineCounter));
+            childNodeSec->setData(new Token(tokenTypeS, terminals->at(1), "Terminal", lineCounter));
         }
     }
 }
@@ -93,10 +135,7 @@ void SyntaxTreeService::buildTree(std::string filename, SyntaxTreeNode *root, in
 
     while(getline(codeFile, codeRow)) {
         auto chkPos = codeRow.find("data");
-        if (chkPos != std::string::npos)
-            break;
-        
-        if (lineCounter == endPosition)
+        if (chkPos != std::string::npos || lineCounter == endPosition)
             break;
 
         lineCounter++;
@@ -150,7 +189,7 @@ void SyntaxTreeService::buildTree(std::string filename, SyntaxTreeNode *root, in
 
                 SyntaxTreeNode *cxNode = new SyntaxTreeNode();
                 decNode->addChild(cxNode);
-                cxNode->setData(new Token(TokenType::Name, "CX", "Terminal", lineCounter));
+                cxNode->setData(new Token(TokenType::Register, "CX", "Terminal", lineCounter));
             }
 
             jumpCommand(lineCounter, "JMP", terminals, ifNode, filename);

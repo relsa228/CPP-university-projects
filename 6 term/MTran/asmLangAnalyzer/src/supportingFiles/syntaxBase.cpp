@@ -11,7 +11,6 @@ std::vector<std::string> oneTerminalCommands = {
     "DIV",
     "IDIV",
     "INT",
-    "CMP",
     "NEG",
     "INC",
     "PUSH",
@@ -29,7 +28,6 @@ std::vector<std::string> twoTerminalCommands = {
     "ADD",
     "CMP",
     "TEST",
-    "NEG",
     "XOR"
 };
 

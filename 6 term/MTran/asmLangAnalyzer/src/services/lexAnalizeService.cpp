@@ -145,9 +145,9 @@ void LexAnalizeService::checkCodeLex(std::string filename, std::vector<Token *> 
                 if (isName || tokenName.empty())
                     continue;
                 else if (std::regex_match(tokenName, std::regex("^'[\\w|\\W]+'$")))
-                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant string value", lineCounter));
+                    tokenList->push_back(new Token(TokenType::Constant, tokenName, "Constant string value", lineCounter));
                 else if (std::regex_match(tokenName, std::regex("^\\d+$")))
-                    tokenList->push_back(new Token(TokenType::Name, tokenName, "Constant numeric value", lineCounter));
+                    tokenList->push_back(new Token(TokenType::Constant, tokenName, "Constant numeric value", lineCounter));
                 else if (std::find(commandList.begin(), commandList.end(), tokenName) != commandList.end()) 
                     tokenList->push_back(new Token(TokenType::Command, tokenName, "Command lexem", lineCounter));
                 else if (std::find(conditionalCrossing.begin(), conditionalCrossing.end(), tokenName) != conditionalCrossing.end()) 

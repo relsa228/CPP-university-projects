@@ -25,21 +25,23 @@ void SemanticAnalizeService::initSemanticAnalize(SyntaxTreeNode* syntaxTree) {
             }
             
             if (commandName == "PUSH" && (token->getData()->getTokenType() != TokenType::Name && 
-                    token->getData()->getTokenType() != TokenType::Register && codePointFlag)) 
+                    (token->getData()->getTokenType() != TokenType::Register || codePointFlag))) 
                 printf("TYPE ERROR: at line %d\n", parentData->getPosition());
-            else if (commandName == "INT" && token->getData()->getTokenType() != TokenType::Interruption && codePointFlag) 
+            else if (commandName == "INT" && (token->getData()->getTokenType() != TokenType::Interruption || codePointFlag)) 
                 printf("TYPE ERROR: at line %d\n", parentData->getPosition());
             else if (std::find(regOnlyCommand.begin(), regOnlyCommand.end(), commandName) != regOnlyCommand.end() && 
-                        token->getData()->getTokenType() != TokenType::Register && codePointFlag) 
+                        (token->getData()->getTokenType() != TokenType::Register || codePointFlag)) 
                 printf("TYPE ERROR: at line %d\n", parentData->getPosition());
 
-            else if (std::find(regDataCommand.begin(), regDataCommand.end(), commandName) != regDataCommand.end()) {
+            else if (std::find(regDataCommand.begin(), regDataCommand.end(), commandName) != regDataCommand.end() && !codePointFlag) {
                 if (parentNode->getChildList()->at(0)->getData()->getTokenType() != TokenType::Register && 
-                        parentNode->getChildList()->at(0)->getData()->getTokenType() != TokenType::Name && codePointFlag) 
+                        parentNode->getChildList()->at(0)->getData()->getTokenType() != TokenType::Name) 
                     printf("TYPE ERROR: at line %d\n", parentData->getPosition());
                 
                 else if (parentNode->getChildList()->at(1)->getData()->getTokenType() != TokenType::Register && 
-                            parentNode->getChildList()->at(1)->getData()->getTokenType() != TokenType::Name && codePointFlag)     
+                            parentNode->getChildList()->at(1)->getData()->getTokenType() != TokenType::Name &&
+                                parentNode->getChildList()->at(1)->getData()->getTokenType() != TokenType::Interruption &&
+                                    parentNode->getChildList()->at(1)->getData()->getTokenType() != TokenType::Constant)     
                     printf("TYPE ERROR: at line %d\n", parentData->getPosition());
             }
         }

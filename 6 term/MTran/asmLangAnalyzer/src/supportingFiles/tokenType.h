@@ -10,7 +10,8 @@ enum class TokenType {
     Name = 4,
     Sign = 5,
     Register = 6,
-    Interruption = 7
+    Interruption = 7,
+    Constant = 8
 };
 
 #endif // !TOKENTYPE_H

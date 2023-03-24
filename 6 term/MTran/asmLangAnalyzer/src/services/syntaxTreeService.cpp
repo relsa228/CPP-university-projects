@@ -20,7 +20,7 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
     }
     else if (std::find(oneTerminalCommands.begin(), oneTerminalCommands.end(), tokenName) != oneTerminalCommands.end()) {
         if(terminals->size() != 1)
-            printf("Wrong number of arguments at line %d\n", lineCounter);
+            printf("ARG COUNT ERROR: at line %d\n", lineCounter);
         else {
             TokenType tokenType = TokenType::Command;
             
@@ -32,7 +32,7 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
                 else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(0)) != interruptionsList.end())
                     tokenType = TokenType::Interruption;
                 else if (std::regex_match(terminals->at(0), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(0), std::regex("^\\d+$")))        
-                    tokenType = TokenType::Name;
+                    tokenType = TokenType::Constant;
             }
 
             SyntaxTreeNode *node = new SyntaxTreeNode();
@@ -45,7 +45,7 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
         }
     } else if (std::find(twoTerminalCommands.begin(), twoTerminalCommands.end(), tokenName) != twoTerminalCommands.end()) {
         if(terminals->size() != 2)
-            printf("Wrong number of arguments at line %d\n", lineCounter);
+            printf("ARG COUNT ERROR: at line %d\n", lineCounter);
         else {
             TokenType tokenTypeF = TokenType::Command;
             TokenType tokenTypeS = TokenType::Command;
@@ -58,7 +58,7 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
                 else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(0)) != interruptionsList.end())
                     tokenTypeF = TokenType::Interruption;
                 else if (std::regex_match(terminals->at(0), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(0), std::regex("^\\d+$")))        
-                    tokenTypeF = TokenType::Name;
+                    tokenTypeF = TokenType::Constant;
             }
             else
                 tokenTypeF = TokenType::Name;
@@ -71,7 +71,7 @@ void SyntaxTreeService::includeCommand(int lineCounter, std::string tokenName, s
                 else if (std::find(interruptionsList.begin(), interruptionsList.end(), terminals->at(1)) != interruptionsList.end())
                     tokenTypeS = TokenType::Interruption;
                 else if (std::regex_match(terminals->at(1), std::regex("^'[\\w|\\W]+'$")) || std::regex_match(terminals->at(1), std::regex("^\\d+$")))        
-                    tokenTypeS = TokenType::Name;
+                    tokenTypeS = TokenType::Constant;
             }
             else
                 tokenTypeS = TokenType::Name;
@@ -99,7 +99,7 @@ void SyntaxTreeService::jumpCommand(int lineCounter, std::string tokenName, std:
     int codePointLine = 0;
 
     if(terminals->size() != 1)
-        printf("Wrong number of arguments at line %d\n", lineCounter);
+        printf("ARG COUNT ERROR: at line %d\n", lineCounter);
     else {
         SyntaxTreeNode *childNode = new SyntaxTreeNode();
         node->addChild(childNode);

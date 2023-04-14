@@ -25,20 +25,6 @@ void printTree(SyntaxTreeNode *syntaxTree, int lvl) {
 }
 
 int main(int argc, const char** argv) {
-    std::string filename = "test_2_2.asm";
-    SyntaxTreeNode *syntaxTree = new SyntaxTreeNode();
-
-    LexAnalizeService* lexAnalizeService = new LexAnalizeService();
-    TableCreateService* tableCreateService = new TableCreateService();
-    SyntaxTreeService* syntaxTreeService = new SyntaxTreeService();
-    SemanticAnalizeService* semanticAnalizeService = new SemanticAnalizeService();
-
-    std::vector<Token *> *tokenList = lexAnalizeService->initLexAnalize(filename);
-    syntaxTreeService->buildTree(filename, syntaxTree, 0, INT32_MAX);
-    semanticAnalizeService->initSemanticAnalize(syntaxTree);
-    //tableCreateService->createTable(tokenList);
-    
-    //printf("|.code\n");
-    //printTree(syntaxTree, 0);
+    printf("123456789");
     return 0;
 }
